@@ -19,3 +19,46 @@
     --secondary-foreground: 39 6% 47%;
   }
 }
+
+@layer components {
+  .btn {
+    @apply rounded-lg px-4 py-2 text-sm outline-none;
+  }
+
+  .btn-primary {
+    @apply transition-all bg-primary text-white hover:bg-primary-dark focus:bg-primary-dark focus:ring-4 focus:ring-primary/15;
+  }
+
+  .btn-danger {
+    @apply transition-all bg-danger text-white hover:bg-danger-dark focus:bg-danger-dark focus:ring-4 focus:ring-danger/15;
+  }
+
+  .btn-success {
+    @apply transition-all bg-success text-white hover:bg-success-dark focus:bg-success-dark focus:ring-4 focus:ring-success/15;
+  }
+
+  .btn-secondary {
+    @apply transition-all bg-background text-foreground hover:bg-secondary focus:bg-secondary focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-background border border-secondary;
+  }
+
+  .btn-link {
+    @apply text-sm text-secondary-foreground hover:text-foreground hover:underline focus:text-foreground focus:underline;
+  }
+
+  .form-control {
+    @apply rounded-lg border border-gray-200 bg-background text-foreground outline-none transition-all dark:border-gray-500/25 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/15 dark:focus-within:border-primary;
+  }
+
+  .form-control:disabled,
+  .form-control[aria-disabled="true"] {
+    @apply cursor-not-allowed bg-secondary/25 focus-within:ring-0 focus-within:border-gray-200 dark:focus-within:border-gray-500/25;
+  }
+
+  :has(.form-control + p.text-danger)>.form-control {
+    @apply border-danger focus-within:ring-danger/15;
+  }
+
+  .checkbox {
+    @apply rounded border border-gray-200 dark:border-gray-500/25 bg-background text-primary !outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/15 focus:ring-offset-2 focus:ring-offset-background;
+  }
+}

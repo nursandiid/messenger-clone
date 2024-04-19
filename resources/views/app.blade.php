@@ -7,6 +7,9 @@
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Icon -->
+    <link rel="icon" href="{{ asset('images/logo.png') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

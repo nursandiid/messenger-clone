@@ -3,17 +3,15 @@ import { Link } from "@inertiajs/react";
 import { PropsWithChildren } from "react";
 
 export default function Guest({ children }: PropsWithChildren) {
-    return (
-        <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-secondary">
+      <div className="flex w-full max-w-md flex-col space-y-6 overflow-hidden rounded-lg bg-background p-6 shadow-md">
+        <Link href="/" className="mx-auto w-20">
+          <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
+        </Link>
 
-            <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {children}
-            </div>
-        </div>
-    );
+        {children}
+      </div>
+    </div>
+  );
 }
