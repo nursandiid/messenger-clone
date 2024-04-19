@@ -5,14 +5,16 @@ import InputLabel from "@/components/InputLabel";
 import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { RegisterUserSchema } from "@/types/user";
 
 export default function Register() {
-  const { data, setData, post, processing, errors, reset } = useForm({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-  });
+  const { data, setData, post, processing, errors, reset } =
+    useForm<RegisterUserSchema>({
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    });
 
   useEffect(() => {
     return () => {

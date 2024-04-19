@@ -7,6 +7,7 @@ import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import FormAlert from "@/components/FormAlert";
+import { LoginSchema } from "@/types/user";
 
 export default function Login({
   status,
@@ -15,11 +16,12 @@ export default function Login({
   status?: string;
   canResetPassword: boolean;
 }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
-    email: "",
-    password: "",
-    remember: false,
-  });
+  const { data, setData, post, processing, errors, reset } =
+    useForm<LoginSchema>({
+      email: "",
+      password: "",
+      remember: false,
+    });
 
   useEffect(() => {
     return () => {

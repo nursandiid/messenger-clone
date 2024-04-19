@@ -5,6 +5,7 @@ import InputLabel from "@/components/InputLabel";
 import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
+import { ResetPasswordSchema } from "@/types/user";
 
 export default function ResetPassword({
   token,
@@ -13,12 +14,13 @@ export default function ResetPassword({
   token: string;
   email: string;
 }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
-    token: token,
-    email: email,
-    password: "",
-    password_confirmation: "",
-  });
+  const { data, setData, post, processing, errors, reset } =
+    useForm<ResetPasswordSchema>({
+      token: token,
+      email: email,
+      password: "",
+      password_confirmation: "",
+    });
 
   useEffect(() => {
     return () => {
