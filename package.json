@@ -25,6 +25,7 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "clsx": "^2.1.0"
+        "clsx": "^2.1.0",
+        "react-icons": "^5.1.0"
     }
 }
