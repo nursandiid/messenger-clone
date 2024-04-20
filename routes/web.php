@@ -16,9 +16,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/users/{id}', [UsersController::class, 'update'])->name('users.update');
 
     Route::get('/chats', [ChatsController::class, 'index'])->name('chats.index');
-    Route::get('/chats/{userId}', [ChatsController::class, 'show'])->name('chats.show');
-
     Route::get('/chats/users', [ChatsController::class, 'loadChats'])->name('chats.users');
+
+    Route::get('/chats/{userId}', [ChatsController::class, 'show'])->name('chats.show');
 
     Route::get('/contacts', [ChatsController::class, 'index'])->name('contacts.index');
     Route::get('/archived_chats', [ChatsController::class, 'index'])->name('archived_chats.index');

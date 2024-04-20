@@ -2,8 +2,10 @@ import { useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import ChatListSearch from "@/components/chats/ChatListSearch";
 import ChatList from "@/components/chats/ChatList";
+import { useChatContext } from "@/contexts/chat-context";
 
 export default function Sidebar() {
+  const { chats } = useChatContext();
   const [search, setSearch] = useState("");
 
   return (
@@ -21,7 +23,17 @@ export default function Sidebar() {
       {/* chats recently */}
       <ChatList search={search} href="chats.show" type="chats" />
 
-      {/* message (user not found, no chat yet) */}
+      {chats.length === 0 && search.length > 0 && (
+        <p className="flex h-full flex-1 items-center justify-center">
+          User not found
+        </p>
+      )}
+
+      {chats.length === 0 && search.length === 0 && (
+        <p className="flex h-full flex-1 items-center justify-center">
+          No chat yet
+        </p>
+      )}
     </div>
   );
 }
