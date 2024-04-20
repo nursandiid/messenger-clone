@@ -18,7 +18,7 @@ export default function UpdateProfileInformation({
   status?: string;
   className?: string;
 }) {
-  const user = usePage<PageProps>().props.auth.user;
+  const user = usePage<PageProps>().props.auth;
   const avatarRef = useRef<HTMLImageElement>(null);
 
   const { data, setData, post, errors, processing, recentlySuccessful } =

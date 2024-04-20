@@ -12,7 +12,7 @@ export default function Edit({
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
   return (
     <AuthenticatedLayout
-      user={auth.user}
+      user={auth}
       header={
         <h2 className="text-xl font-semibold leading-tight text-foreground">
           Profile

@@ -45,6 +45,10 @@
     @apply text-sm text-secondary-foreground hover:text-foreground hover:underline focus:text-foreground focus:underline;
   }
 
+  .btn-close {
+    @apply text-2xl p-1;
+  }
+
   .form-control {
     @apply rounded-lg border border-gray-200 bg-background text-foreground outline-none transition-all dark:border-gray-500/25 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/15 dark:focus-within:border-primary;
   }

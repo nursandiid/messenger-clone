@@ -1,7 +1,8 @@
 import BadgeNotification from "@/components/chats/BadgeNotification";
 import Dropdown from "@/components/Dropdown";
-import { PageProps } from "@/types";
-import { Link, usePage } from "@inertiajs/react";
+import { useAppContext } from "@/contexts/app-context";
+import { useModalContext } from "@/contexts/modal-context";
+import { Link } from "@inertiajs/react";
 import clsx from "clsx";
 import {
   BsArchive,
@@ -13,7 +14,12 @@ import {
 } from "react-icons/bs";
 
 export default function SidebarMini() {
-  const { auth } = usePage<PageProps>().props;
+  const { auth } = useAppContext();
+  const { openModal } = useModalContext();
+
+  const openPreferences = () => {
+    openModal({ view: "PREFERENCES", size: "lg" });
+  };
 
   return (
     <div className="order-2 mt-auto flex flex-row justify-between bg-background sm:order-1 sm:mt-0 sm:flex-col sm:items-center sm:justify-center sm:p-2">
@@ -59,7 +65,7 @@ export default function SidebarMini() {
           </Dropdown.Trigger>
 
           <Dropdown.Content align="top-left" contentClasses="mb-12 sm:mb-10">
-            <Dropdown.Button>
+            <Dropdown.Button onClick={openPreferences}>
               <div className="flex items-center gap-2">
                 <BsGear />
                 Preferences
