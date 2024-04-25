@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatMessage;
+use App\Models\User;
 use App\Traits\Chat;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,9 +34,17 @@ class ChatsController extends Controller
     public function show(string $userId)
     {
         try {
+            $user = User::find($userId);
+            if (!$user) {
+                throw new \Exception('User not found');
+            }
+
+            $user->chat_type = ChatMessage::CHAT_TYPE;
+
             $chats = $this->chats();
 
-            return Inertia::render('chats/Index', [
+            return Inertia::render('chats/Show', [
+                'user' => $user,
                 'chats' => $chats
             ]);
         } catch (\Exception $e) {

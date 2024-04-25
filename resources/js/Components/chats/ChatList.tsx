@@ -49,6 +49,7 @@ export default function ChatList({
               onClick={() => handleMarkAsRead(chat)}
               className={clsx(
                 "relative flex w-full flex-1 items-center gap-3 rounded-lg p-3 text-left transition-all group-hover:bg-secondary",
+                route().current(href, chat.id) && "bg-secondary",
               )}
             >
               {search.length === 0 && chat.created_at ? (
@@ -69,6 +70,7 @@ export default function ChatList({
                         className={clsx(
                           "truncate",
                           !chat.is_read && "font-medium text-foreground",
+                          route().current(href, chat.id) && "!text-foreground",
                         )}
                         dangerouslySetInnerHTML={{ __html: chat.body }}
                       />
