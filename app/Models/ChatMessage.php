@@ -27,6 +27,11 @@ class ChatMessage extends Model
         return $this->morphTo();
     }
 
+    public function attachments() 
+    {
+        return $this->hasMany(ChatMessageFile::class, 'chat_id');
+    }
+
     /**
      * Bootstrap the model and its traits.
      *

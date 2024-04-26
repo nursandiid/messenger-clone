@@ -1,0 +1,11 @@
+.epr_-to8mm {
+  @apply border !border-secondary !rounded-2xl;
+}
+
+.epr_x558go {
+  @apply !ring-0 !outline-none !bg-secondary transition-all -mt-0.5;
+}
+
+.epr_x558go:focus {
+  @apply border !border-primary;
+}
