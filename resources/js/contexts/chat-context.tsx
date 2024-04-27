@@ -1,3 +1,4 @@
+import { fetchChats } from "@/api/chats";
 import { ChatPageProps } from "@/types";
 import { Chat, ChatPaginate } from "@/types/chat";
 import { InitialPaginate } from "@/types/paginate";
@@ -68,6 +69,10 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
   const setPaginate = (value: ChatPaginate) =>
     dispatch({ type: "SET_PAGINATE", payload: value });
 
+  const refetchChats = async () => {
+    return fetchChats().then((response) => setChats(response.data.data.data));
+  };
+
   useEffect(() => {
     setIsFirstLoading(false);
     setChats(props.chats.data);
@@ -80,6 +85,7 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
     paginate: isFirstLoading ? props.chats : state.paginate,
     setChats,
     setPaginate,
+    refetchChats,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

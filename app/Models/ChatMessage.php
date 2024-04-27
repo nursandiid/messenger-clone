@@ -27,6 +27,11 @@ class ChatMessage extends Model
         return $this->morphTo();
     }
 
+    public function another_user() 
+    {
+        return $this->belongsTo(User::class, 'another_user_id');
+    }
+
     public function attachments() 
     {
         return $this->hasMany(ChatMessageFile::class, 'chat_id');

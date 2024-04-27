@@ -8,7 +8,11 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import { BsEmojiSmile, BsPlusLg } from "react-icons/bs";
 
-export default function ChatFooter() {
+type ChatFooterProps = {
+  scrollToBottom: () => void;
+};
+
+export default function ChatFooter({ scrollToBottom }: ChatFooterProps) {
   const { theme } = useAppContext();
   const { refetchChats } = useChatContext();
   const { user, messages, setMessages } = useChatMessageContext();
@@ -61,21 +65,25 @@ export default function ChatFooter() {
     e.preventDefault();
     setProcessing(true);
 
-    if (message.length === 0) {
+    if (message.length === 0 || processing) {
       return;
     }
 
-    saveMessage({ user, message }).then((response) => {
-      setMessage("");
-      setTextareaHeight(48);
-      setIsOpenEmoji(false);
-      textareaRef.current?.focus();
+    saveMessage({ user, message })
+      .then((response) => {
+        setMessage("");
+        setTextareaHeight(48);
+        setIsOpenEmoji(false);
+        textareaRef.current?.focus();
 
-      const data = response.data.data;
+        const data = response.data.data;
 
-      setMessages([...messages, data]);
-      refetchChats();
-    });
+        setMessages([...messages, data]);
+        refetchChats();
+
+        setTimeout(scrollToBottom, 300);
+      })
+      .finally(() => setProcessing(false));
   };
 
   const toggleEmoji = () => {
@@ -146,8 +154,9 @@ export default function ChatFooter() {
           "mb-1 flex rounded-full p-2 text-primary transition-all disabled:cursor-not-allowed",
           message.trim().length === 0 &&
             "hover:bg-secondary focus:bg-secondary",
-          message.trim().length > 0 && "bg-primary !text-white",
+          message.trim().length > 0 && !processing && "bg-primary !text-white",
         )}
+        disabled={processing}
       >
         <BiSend className="h-6 w-6" />
       </button>
