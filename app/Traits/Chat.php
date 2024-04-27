@@ -9,6 +9,8 @@ use Illuminate\Database\Query\JoinClause;
 
 trait Chat
 {
+    protected $validImageExtensions = ["jpg", "jpeg", "png", "gif", "svg", "bmp", "webp"];
+
     public function chats() 
     {
         if (request()->filled('query')) {
@@ -82,7 +84,7 @@ trait Chat
         $chats = ChatMessage::with([
                 'from',
                 'to',
-                'attachments'
+                'attachments' => fn ($query) => $query->with('sent_by')
             ])
             ->where(function (Builder $query) use ($id) {
                 $query->where('from_id', auth()->id())

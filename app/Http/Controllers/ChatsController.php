@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ChatsController extends Controller
@@ -83,13 +84,42 @@ class ChatsController extends Controller
     {
         DB::beginTransaction();
         try {
+            $attachments = [];
+            if ($request->hasFile('attachments')) {
+                /**
+                 * @var \Illuminate\Http\UploadedFile $attachment
+                 */
+                foreach ($request->file('attachments') as $attachment) {
+                    $extension = $attachment->getClientOriginalExtension();
+                    $fileName = \Str::uuid() . '.' . $extension;
+
+                    array_push($attachments, [
+                        'original_name' => $attachment->getClientOriginalName(),
+                        'file_name' => $fileName,
+                        'file_path' => '/storage/chats/' . auth()->id(),
+                        'file_size' => $attachment->getSize(),
+                        'file_type' => in_array($extension, $this->validImageExtensions) ? 'media' : 'files',
+                        'sent_by_id' => auth()->id()
+                    ]);
+
+                    Storage::disk('public')->putFileAs('/chats/'. auth()->id(), $attachment, $fileName);
+                }
+            }
+
+            /**
+             * @var ChatMessage $chat
+             */
             $chat = ChatMessage::create([
                 'from_id' => auth()->id(),
                 'to_id' => $request->to_id,
                 'to_type' => User::class,
                 'body' => $request->body
             ]);
-    
+
+            $chat->attachments()->createMany($attachments);
+
+            $chat->attachments = $chat->attachments;
+
             DB::commit();
 
             return $this->ok(data: $chat, code: 201);

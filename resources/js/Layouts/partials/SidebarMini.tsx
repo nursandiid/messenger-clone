@@ -22,7 +22,12 @@ export default function SidebarMini() {
   };
 
   return (
-    <div className="order-2 mt-auto flex flex-row justify-between bg-background sm:order-1 sm:mt-0 sm:flex-col sm:items-center sm:justify-center sm:p-2">
+    <div
+      className={clsx(
+        "order-2 mt-auto flex-row justify-between bg-background sm:order-1 sm:mt-0 sm:flex sm:flex-col sm:items-center sm:justify-center sm:p-2",
+        route().current("chats.show") ? "hidden" : "flex",
+      )}
+    >
       <Link
         href={route("chats.index")}
         className={clsx(

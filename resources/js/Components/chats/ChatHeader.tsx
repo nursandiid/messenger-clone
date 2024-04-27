@@ -1,15 +1,32 @@
 import BadgeOnline from "@/components/chats/BadgeOnline";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { CHAT_TYPE } from "@/types/chat";
+import { Link } from "@inertiajs/react";
 import moment from "moment";
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots, BsXLg } from "react-icons/bs";
+import { FaArrowLeft } from "react-icons/fa";
 
-export default function ChatHeader() {
+type ChatHeaderProps = {
+  onDrop: boolean;
+  closeOnPreview: () => void;
+};
+
+export default function ChatHeader({
+  onDrop,
+  closeOnPreview,
+}: ChatHeaderProps) {
   const { user, toggleSidebarRight } = useChatMessageContext();
 
   return (
     <div className="flex h-14 items-center justify-between border-b border-secondary p-2 shadow-sm">
       <div className="flex items-center gap-2">
+        <Link
+          href={route("chats.index")}
+          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-secondary focus:bg-secondary sm:hidden"
+        >
+          <FaArrowLeft />
+        </Link>
+
         <div className="relative">
           <img
             src={user.avatar}
@@ -31,12 +48,21 @@ export default function ChatHeader() {
         </div>
       </div>
 
-      <button
-        className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-secondary focus:bg-secondary"
-        onClick={toggleSidebarRight}
-      >
-        <BsThreeDots />
-      </button>
+      {onDrop ? (
+        <button
+          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-secondary focus:bg-secondary"
+          onClick={closeOnPreview}
+        >
+          <BsXLg />
+        </button>
+      ) : (
+        <button
+          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-secondary focus:bg-secondary"
+          onClick={toggleSidebarRight}
+        >
+          <BsThreeDots />
+        </button>
+      )}
     </div>
   );
 }
