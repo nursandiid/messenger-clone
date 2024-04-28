@@ -59,4 +59,25 @@ class User extends Authenticatable
             set: fn ($value) => (int) $value
         );
     }
+
+    public function contacts() 
+    {
+        return $this->hasMany(ChatContact::class, 'user_id');
+    }
+
+    public function is_contact_saved(string $id) 
+    {
+        return $this->contacts()
+            ->where('contact_id', $id)
+            ->first()
+            ?->is_contact_saved != null;
+    }
+
+    public function is_contact_blocked(string $id) 
+    {
+        return $this->contacts()
+            ->where('contact_id', $id)
+            ->first()
+            ?->is_contact_blocked != null;
+    }
 }

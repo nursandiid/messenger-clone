@@ -52,6 +52,7 @@ export default function ChatList({
               className={clsx(
                 "relative flex w-full flex-1 items-center gap-3 rounded-lg p-3 text-left transition-all group-hover:bg-secondary",
                 route().current(href, chat.id) && "bg-secondary",
+                chat.is_contact_blocked && "opacity-25",
               )}
             >
               {search.length === 0 && chat.created_at ? (

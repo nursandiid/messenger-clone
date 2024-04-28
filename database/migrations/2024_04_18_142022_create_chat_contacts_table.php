@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('contact_id');
             $table->boolean('is_contact_saved')->default(0);
-            $table->boolean('is_contact_blokced')->default(0);
+            $table->boolean('is_contact_blocked')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')

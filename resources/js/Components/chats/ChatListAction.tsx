@@ -1,12 +1,14 @@
-import { Chat } from "@/types/chat";
+import { Chat, CHAT_TYPE } from "@/types/chat";
 import Dropdown, { useDropdownContext } from "@/components/Dropdown";
 import { useRef } from "react";
 import clsx from "clsx";
-import { BsArchive, BsCheck2, BsThreeDots, BsXLg } from "react-icons/bs";
+import { BsArchive, BsBan, BsCheck2, BsThreeDots, BsXLg } from "react-icons/bs";
 import { useAppContext } from "@/contexts/app-context";
 import { archiveChat, markAsRead, markAsUnread } from "@/api/chats";
 import { useChatContext } from "@/contexts/chat-context";
 import { useModalContext } from "@/contexts/modal-context";
+import { unblockContact } from "@/api/contacts";
+import { useChatMessageContext } from "@/contexts/chat-message-context";
 
 type ActionProps = {
   chat: Chat;
@@ -25,6 +27,7 @@ export default function ChatListAction({ chat }: ActionProps) {
 const Action = ({ chat }: ActionProps) => {
   const { auth } = useAppContext();
   const { chats, setChats, refetchChats } = useChatContext();
+  const { user, setUser } = useChatMessageContext();
   const { openModal } = useModalContext();
   const { open } = useDropdownContext();
 
@@ -75,6 +78,32 @@ const Action = ({ chat }: ActionProps) => {
     });
   };
 
+  const blockContactConfirmation = () => {
+    openModal({
+      view: "BLOCK_CONTACT_CONFIRMATION",
+      size: "lg",
+      payload: chat,
+    });
+  };
+
+  const handleUnblockContact = () => {
+    unblockContact(chat.id).then(() => {
+      setChats(
+        chats.map((c) => {
+          if (c.id === chat.id) {
+            c.is_contact_blocked = false;
+          }
+
+          return c;
+        }),
+      );
+
+      if (user && user.id === chat.id) {
+        setUser({ ...user, is_contact_blocked: false });
+      }
+    });
+  };
+
   return (
     <div ref={dropdownRef}>
       <Dropdown.Trigger>
@@ -106,17 +135,43 @@ const Action = ({ chat }: ActionProps) => {
 
         <Dropdown.Button onClick={handleArchiveChat}>
           <div className="flex items-center gap-2">
-            <BsArchive className="-ml-1 text-lg" />
+            <BsArchive />
             Archive Chat
           </div>
         </Dropdown.Button>
 
         <Dropdown.Button onClick={deleteChatConfirmation}>
           <div className="flex items-center gap-2">
-            <BsXLg className="-ml-1 text-lg" />
+            <BsXLg />
             Delete Chat
           </div>
         </Dropdown.Button>
+
+        {auth.id !== chat.id && chat.chat_type === CHAT_TYPE.CHATS && (
+          <>
+            <hr className="my-2 border-secondary" />
+
+            <Dropdown.Button
+              onClick={
+                chat.is_contact_blocked
+                  ? handleUnblockContact
+                  : blockContactConfirmation
+              }
+            >
+              {chat.is_contact_blocked ? (
+                <div className="flex items-center gap-2 text-success">
+                  <BsBan />
+                  Unblock Contact
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-danger">
+                  <BsBan />
+                  Block Contact
+                </div>
+              )}
+            </Dropdown.Button>
+          </>
+        )}
       </Dropdown.Content>
     </div>
   );

@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import BlockContactConfirmation from "@/components/modals/BlockContactConfirmation";
 import DeleteChatConfirmation from "@/components/modals/DeleteChatConfirmation";
 import DeleteMessageConfirmation from "@/components/modals/DeleteMessageConfirmation";
 import Preferences from "@/components/modals/Preferences";
@@ -12,7 +13,8 @@ import {
 type ModalViews =
   | "PREFERENCES"
   | "DELETE_MESSAGE_CONFIRMATION"
-  | "DELETE_CHAT_CONFIRMATION";
+  | "DELETE_CHAT_CONFIRMATION"
+  | "BLOCK_CONTACT_CONFIRMATION";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -106,6 +108,7 @@ export const ModalChildren = () => {
       {view === "PREFERENCES" && <Preferences />}
       {view === "DELETE_MESSAGE_CONFIRMATION" && <DeleteMessageConfirmation />}
       {view === "DELETE_CHAT_CONFIRMATION" && <DeleteChatConfirmation />}
+      {view === "BLOCK_CONTACT_CONFIRMATION" && <BlockContactConfirmation />}
     </Modal>
   );
 };

@@ -91,6 +91,7 @@ trait Chat
                 $mapped->is_read = $seenInId->filter(fn ($item) => $item->id === auth()->id())->count() > 0;
                 $mapped->is_reply = $chat->another_user->id === $chat->from_id;
                 $mapped->is_online = $chat->another_user->is_online == true;
+                $mapped->is_contact_blocked = auth()->user()->is_contact_blocked($chat->another_user->id);
                 $mapped->chat_type = ChatMessage::CHAT_TYPE;
                 $mapped->created_at = $chat->created_at;
 

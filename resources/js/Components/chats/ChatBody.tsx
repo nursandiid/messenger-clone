@@ -3,6 +3,7 @@ import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { CHAT_TYPE } from "@/types/chat";
 import moment from "moment";
 import ChatMessages from "@/components/chats/ChatMessages";
+import SaveOrBlockContact from "@/components/chats/SaveOrBlockContact";
 
 type ChatBodyProps = {
   chatContainerRef: React.RefObject<HTMLDivElement>;
@@ -55,6 +56,8 @@ export default function ChatBody({
         <ChatMessages />
 
         <div ref={bottomRef} className="h-0" />
+
+        <SaveOrBlockContact />
       </div>
     )
   );

@@ -6,8 +6,9 @@ import clsx from "clsx";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
-import { BsEmojiSmile, BsPlusLg } from "react-icons/bs";
+import { BsBan, BsEmojiSmile, BsPlusLg } from "react-icons/bs";
 import { Preview } from "./Content";
+import { unblockContact } from "@/api/contacts";
 
 type ChatFooterProps = {
   scrollToBottom: () => void;
@@ -23,8 +24,8 @@ export default function ChatFooter({
   onSelectOrPreviewFiles,
 }: ChatFooterProps) {
   const { theme } = useAppContext();
-  const { refetchChats } = useChatContext();
-  const { user, messages, setMessages } = useChatMessageContext();
+  const { chats, setChats, refetchChats } = useChatContext();
+  const { user, setUser, messages, setMessages } = useChatMessageContext();
 
   const [message, setMessage] = useState("");
   const [textareaHeight, setTextareaHeight] = useState(48);
@@ -106,6 +107,38 @@ export default function ChatFooter({
   const handleOnEmojiClick = (emoji: string) => {
     setMessage((prevMsg) => prevMsg + emoji);
   };
+
+  const handleUnblockContact = () => {
+    unblockContact(user.id).then(() => {
+      setChats(
+        chats.map((c) => {
+          if (c.id === user.id) {
+            c.is_contact_blocked = false;
+          }
+
+          return c;
+        }),
+      );
+
+      if (user && user.id === user.id) {
+        setUser({ ...user, is_contact_blocked: false });
+      }
+    });
+  };
+
+  if (user.is_contact_blocked) {
+    return (
+      <div className="flex flex-col items-center justify-between gap-2 border-t border-secondary py-2">
+        <p className="text-center">Can't send a message to blocked contact</p>
+        <button
+          className="btn btn-success flex items-center gap-2 rounded-full"
+          onClick={handleUnblockContact}
+        >
+          <BsBan /> Unblock
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form
