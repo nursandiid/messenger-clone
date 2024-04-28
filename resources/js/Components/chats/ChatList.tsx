@@ -6,6 +6,7 @@ import { relativeTime } from "@/utils";
 import { useChatContext } from "@/contexts/chat-context";
 import BadgeChatNotification from "@/components/chats/BadgeChatNotification";
 import { markAsRead } from "@/api/chats";
+import ChatListAction from "@/components/chats/ChatListAction";
 
 type ChatListProps = {
   search: string;
@@ -98,9 +99,10 @@ export default function ChatList({
                   </div>
                 </>
               )}
-
-              {!chat.is_read && <BadgeChatNotification />}
             </Link>
+
+            {chat.body && type === "chats" && <ChatListAction chat={chat} />}
+            {!chat.is_read && <BadgeChatNotification />}
           </div>
         ))}
     </div>

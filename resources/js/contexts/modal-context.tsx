@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import DeleteChatConfirmation from "@/components/modals/DeleteChatConfirmation";
 import DeleteMessageConfirmation from "@/components/modals/DeleteMessageConfirmation";
 import Preferences from "@/components/modals/Preferences";
 import {
@@ -8,7 +9,10 @@ import {
   useReducer,
 } from "react";
 
-type ModalViews = "PREFERENCES" | "DELETE_MESSAGE_CONFIRMATION";
+type ModalViews =
+  | "PREFERENCES"
+  | "DELETE_MESSAGE_CONFIRMATION"
+  | "DELETE_CHAT_CONFIRMATION";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -101,6 +105,7 @@ export const ModalChildren = () => {
     <Modal show={isOpen} onClose={closeModal} maxWidth={size}>
       {view === "PREFERENCES" && <Preferences />}
       {view === "DELETE_MESSAGE_CONFIRMATION" && <DeleteMessageConfirmation />}
+      {view === "DELETE_CHAT_CONFIRMATION" && <DeleteChatConfirmation />}
     </Modal>
   );
 };

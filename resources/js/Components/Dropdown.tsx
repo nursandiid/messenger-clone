@@ -21,6 +21,8 @@ const DropDownContext = createContext<{
   toggleOpen: () => {},
 });
 
+export const useDropdownContext = () => useContext(DropDownContext);
+
 const Dropdown = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false);
 

@@ -27,8 +27,8 @@ export default function DeleteMessageConfirmation() {
       <Modal.Header title="Delete Message?" onClose={closeModal} />
       <Modal.Body as={Fragment}>
         <p>
-          This message will be removed for you. Others in the chat will be able
-          to see it.
+          This message will be removed for you. Others in the chat will still be
+          able to see it.
         </p>
 
         {message.attachments.length > 0 && (

@@ -33,8 +33,11 @@ trait Chat
                 ->withQueryString()
                 ->setPath(route('chats.users'));
         } else {
-            $latestMessage = ChatMessage::where('from_id', auth()->id())
-                ->orWhere('to_id', auth()->id())
+            $latestMessage = ChatMessage::where(function (Builder $query) {
+                $query->where('from_id', auth()->id())
+                      ->orWhere('to_id', auth()->id());
+                })
+                ->deletedInIds()
                 ->selectRaw("
                     MAX(sort_id) as sort_id,
                     CASE
@@ -52,8 +55,15 @@ trait Chat
                                  ->orOn('chat_messages.to_id', 'lm.another_user_id');
                          });
                 })
-                ->where('chat_messages.from_id', auth()->id())
-                ->orWhere('chat_messages.to_id', auth()->id())
+                ->leftJoin('archived_chats as ac', function (JoinClause $join) {
+                    $join->on('ac.from_id', 'lm.another_user_id')
+                         ->where('ac.archived_by', auth()->id());
+                })
+                ->where(function (Builder $query) {
+                    $query->where('chat_messages.from_id', auth()->id())
+                          ->orWhere('chat_messages.to_id', auth()->id());
+                })
+                ->whereNull('ac.id')
                 ->select('chat_messages.*', 'lm.another_user_id')
                 ->orderByDesc('sort_id')
                 ->paginate(15)
