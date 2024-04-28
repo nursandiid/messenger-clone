@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArchivedChat;
+use App\Models\ChatContact;
 use App\Models\ChatMessage;
 use App\Models\User;
 use App\Traits\Chat;
@@ -21,10 +22,8 @@ class ChatsController extends Controller
     public function index()
     {
         try {
-            $chats = $this->chats();
-
             return Inertia::render('chats/Index', [
-                'chats' => $chats
+                'chats' => fn () => $this->chats()
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -46,12 +45,10 @@ class ChatsController extends Controller
             $user->is_contact_blocked = auth()->user()->is_contact_blocked($id);
             $user->chat_type = ChatMessage::CHAT_TYPE;
 
-            $chats = $this->chats();
-
             return Inertia::render('chats/Show', [
-                'user' => $user,
-                'chats' => $chats,
-                'messages' => $this->messages($id)
+                'user' => fn () => $user,
+                'chats' => fn () => $this->chats(),
+                'messages' => fn () => $this->messages($id)
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -109,6 +106,10 @@ class ChatsController extends Controller
                 }
             }
 
+            $blockedUser = ChatContact::where('user_id', $request->to_id)
+                ->where('contact_id', auth()->id())
+                ->first();
+
             /**
              * @var ChatMessage $chat
              */
@@ -116,7 +117,8 @@ class ChatsController extends Controller
                 'from_id' => auth()->id(),
                 'to_id' => $request->to_id,
                 'to_type' => User::class,
-                'body' => $request->body
+                'body' => $request->body,
+                'deleted_in_id' => $blockedUser?->is_contact_blocked ? json_encode([['id' => $blockedUser->user_id]]) : null
             ]);
 
             $chat->attachments()->createMany($attachments);
