@@ -17,6 +17,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/chats', [ChatsController::class, 'index'])->name('chats.index');
     Route::post('/chats', [ChatsController::class, 'store'])->name('chats.store');
+    Route::delete('/chats/{id}', [ChatsController::class, 'destroy'])->name('chats.destroy');
+    Route::delete('/chats/{id}/file/{file_name}', [ChatsController::class, 'deleteSelectedFile'])->name('chats.delete_file');
 
     Route::get('/chats/users', [ChatsController::class, 'loadChats'])->name('chats.users');
 

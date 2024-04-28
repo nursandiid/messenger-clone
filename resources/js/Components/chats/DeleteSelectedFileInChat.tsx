@@ -1,3 +1,5 @@
+import { deleteFileInChat } from "@/api/chat-messages";
+import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { Attachment, ChatMessage } from "@/types/chat-message";
 import { BsX } from "react-icons/bs";
 
@@ -10,8 +12,24 @@ export default function DeleteSelectedFileInChat({
   message,
   attachment,
 }: DeleteSelectedFileInChatProps) {
+  const { messages, setMessages } = useChatMessageContext();
+
   const deleteSelectedFile = () => {
-    // TODO: delete selected file / image
+    deleteFileInChat(message, attachment).then(() => {
+      const updatedAttachments = message.attachments.filter(
+        (a) => a.file_name !== attachment.file_name,
+      );
+
+      setMessages(
+        messages.map((m) => {
+          if (m.id === message.id) {
+            m.attachments = updatedAttachments;
+          }
+
+          return m;
+        }),
+      );
+    });
   };
 
   return (

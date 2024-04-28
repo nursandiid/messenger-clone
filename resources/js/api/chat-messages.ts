@@ -1,4 +1,4 @@
-import { ChatMessage, ChatProfile } from "@/types/chat-message";
+import { Attachment, ChatMessage, ChatProfile } from "@/types/chat-message";
 import { AxiosResponse } from "axios";
 
 export const saveMessage = ({
@@ -22,5 +22,20 @@ export const saveMessage = ({
         "Content-Type": "multipart/form-data",
       },
     },
+  );
+};
+
+export const deleteMessage = (
+  message: ChatMessage,
+): Promise<AxiosResponse<{ data: null }>> => {
+  return window.axios.delete(route("chats.destroy", message.id));
+};
+
+export const deleteFileInChat = (
+  message: ChatMessage,
+  attachment: Attachment,
+): Promise<AxiosResponse<{ data: null }>> => {
+  return window.axios.delete(
+    route("chats.delete_file", [message.id, attachment.file_name]),
   );
 };

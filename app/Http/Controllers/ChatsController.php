@@ -129,4 +129,77 @@ class ChatsController extends Controller
             return $this->oops($e->getMessage());
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        DB::beginTransaction();
+        try {
+            $chat = ChatMessage::find($id);
+            if (!$chat) {
+                throw new \Exception('Chat not found');
+            }
+
+            $deletedInId = collect(json_decode($chat->deleted_in_id) ?? []);
+            if ($chat->to instanceof User && $deletedInId->count() > 0) {
+                $chat->delete();
+
+                foreach ($chat->attachments as $attachment) {
+                    $filePath = $attachment->file_path . DIRECTORY_SEPARATOR . $attachment->file_name;
+                    remove_file($filePath);
+                }
+            } else {
+                $chat->update([
+                    'deleted_in_id' => json_encode($deletedInId->push(['id' => auth()->id()])->toArray())
+                ]);
+
+                foreach ($chat->attachments as $attachment) {
+                    $deletedAttachmentInId = collect(json_decode($attachment->deleted_in_id) ?? []);
+                    $attachment->update([
+                        'deleted_in_id' => json_encode($deletedAttachmentInId->push(['id' => auth()->id()])->toArray())
+                    ]);
+                }
+            }
+    
+            DB::commit();
+
+            return $this->ok(code: 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->oops($e->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function deleteSelectedFile(string $id, string $fileName)
+    {
+        DB::beginTransaction();
+        try {
+            $chat = ChatMessage::find($id);
+            if (!$chat) {
+                throw new \Exception('Chat not found');
+            }
+
+            $attachment = $chat->attachments->where('file_name', $fileName)->first();
+            if ($attachment) {
+                $deletedAttachmentInId = collect(json_decode($attachment->deleted_in_id) ?? []);
+                $attachment->update([
+                    'deleted_in_id' => json_encode($deletedAttachmentInId->push(['id' => auth()->id()])->toArray())
+                ]);
+            }
+    
+            DB::commit();
+
+            return $this->ok(code: 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->oops($e->getMessage());
+        }
+    }
 }

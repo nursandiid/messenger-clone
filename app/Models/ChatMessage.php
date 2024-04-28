@@ -55,4 +55,24 @@ class ChatMessage extends Model
             $model->seen_in_id = json_encode([['id' => auth()->id(), 'seen_at' => now()]]);
         });
     }
+
+    public function scopeForUserOrGroup(Builder $query, string $id) 
+    {
+        $query->where(function (Builder $query) use ($id) {
+                $query->where('from_id', auth()->id())
+                    ->where('to_id', $id);
+            })
+            ->orWhere(function (Builder $query) use ($id) {
+                $query->where('from_id', $id)
+                    ->where('to_id', auth()->id());
+            });
+    }
+
+    public function scopeDeletedInIds(Builder $query) 
+    {
+        $query->where(function (Builder $query) {
+            $query->whereNull('deleted_in_id')
+                  ->orWhereRaw("JSON_SEARCH(deleted_in_id, 'ONE', ?, NULL, '$[*].id') IS NULL", auth()->id());
+        });
+    }
 }

@@ -84,16 +84,10 @@ trait Chat
         $chats = ChatMessage::with([
                 'from',
                 'to',
-                'attachments' => fn ($query) => $query->with('sent_by')
+                'attachments' => fn ($query) => $query->with('sent_by')->deletedInIds()
             ])
-            ->where(function (Builder $query) use ($id) {
-                $query->where('from_id', auth()->id())
-                      ->where('to_id', $id);
-            })
-            ->orWhere(function (Builder $query) use ($id) {
-                $query->where('from_id', $id)
-                      ->where('to_id', auth()->id());
-            })
+            ->forUserOrGroup($id)
+            ->deletedInIds()
             ->selectRaw('
                 id, 
                 from_id, 
