@@ -202,4 +202,35 @@ class ChatsController extends Controller
             return $this->oops($e->getMessage());
         }
     }
+
+    public function markAsRead(string $id) 
+    {
+        DB::beginTransaction();
+        try {
+            ChatMessage::forUserOrGroup($id)
+                ->notSeen()
+                ->select('id', 'seen_in_id')
+                ->get()
+                ->each(function ($chat) {
+                    $seenInId = collect(json_decode($chat->seen_in_id));
+                    $seenInId = json_encode($seenInId->push(['id' => auth()->id(), 'seen_at' => now()])->toArray());
+
+                    $chat->update([
+                        'seen_in_id' => $seenInId
+                    ]);
+                });
+
+            $latestMessage = ChatMessage::forUserOrGroup($id)
+                ->latest()
+                ->first();
+
+            DB::commit();
+
+            return $this->ok($latestMessage);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->oops($e->getMessage());
+        }
+    }
 }

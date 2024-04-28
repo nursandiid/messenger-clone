@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/chats/{id}', [ChatsController::class, 'show'])->name('chats.show');
     Route::get('/chats/{id}/messages', [ChatsController::class, 'loadMessages'])->name('chats.messages');
 
+    Route::post('/chats/{id}/read', [ChatsController::class, 'markAsRead'])->name('chats.mark_as_read');
+    Route::post('/chats/{id}/unread', [ChatsController::class, 'markAsUnread'])->name('chats.mark_as_unread');
+
     Route::get('/contacts', [ChatsController::class, 'index'])->name('contacts.index');
     Route::get('/archived_chats', [ChatsController::class, 'index'])->name('archived_chats.index');
 });

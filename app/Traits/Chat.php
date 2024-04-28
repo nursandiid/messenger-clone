@@ -60,17 +60,33 @@ trait Chat
                 ->setPath(route('chats.users'));
 
             foreach ($chats as $key => $chat) {
+                $from = $chat->from_id === auth()->id() ? 'You: ' : '';
+                $attachment = '';
+                if (!$chat->body && $chat->attachments) {
+                    $fileName = $chat->attachments->first()?->original_name;
+                    if (in_array(pathinfo($fileName, PATHINFO_EXTENSION), $this->validImageExtensions)) {
+                        $attachment = '<div class="flex items-center gap-1">'. $from . ChatMessage::SVG_IMAGE_ATTACHMENT .' Photo</div>';
+                    } else {
+                        $attachment = '<div class="flex items-center gap-1">'. $from . ChatMessage::SVG_FILE_ATTACHMENT .' File</div>';
+                    }
+                }
+
                 $mapped = new \stdClass;
+                $seenInId = collect(json_decode($chat->seen_in_id));
+
                 $mapped->id = $chat->another_user->id;
                 $mapped->name = $chat->another_user->name . ($chat->another_user->id === auth()->id() ? ' (You)' : '');
                 $mapped->avatar = $chat->another_user->avatar;
                 $mapped->from_id = $chat->from_id;
-                $mapped->body = $chat->body;
-                $mapped->is_read = true;
-                $mapped->is_reply = false;
-                $mapped->is_online = true;
+                $mapped->is_read = $seenInId->filter(fn ($item) => $item->id === auth()->id())->count() > 0;
+                $mapped->is_reply = $chat->another_user->id === $chat->from_id;
+                $mapped->is_online = $chat->another_user->is_online == true;
                 $mapped->chat_type = ChatMessage::CHAT_TYPE;
                 $mapped->created_at = $chat->created_at;
+
+                $mapped->body = $chat->body
+                    ? $from . \Str::limit(strip_tags($chat->body), 100)
+                    : $attachment;
 
                 $chats[$key] = $mapped;
             }

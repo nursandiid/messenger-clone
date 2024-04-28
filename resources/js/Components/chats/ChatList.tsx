@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { relativeTime } from "@/utils";
 import { useChatContext } from "@/contexts/chat-context";
 import BadgeChatNotification from "@/components/chats/BadgeChatNotification";
+import { markAsRead } from "@/api/chats";
 
 type ChatListProps = {
   search: string;
@@ -22,7 +23,7 @@ export default function ChatList({
   const { chats } = useChatContext();
 
   const handleMarkAsRead = (chat: Chat) => {
-    // TODO: mark as read
+    !chat.is_read && markAsRead(chat);
   };
 
   if (chats.length === 0) return;
