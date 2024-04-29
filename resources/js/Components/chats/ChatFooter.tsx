@@ -9,6 +9,7 @@ import { BiSend } from "react-icons/bi";
 import { BsBan, BsEmojiSmile, BsPlusLg } from "react-icons/bs";
 import { Preview } from "./Content";
 import { unblockContact } from "@/api/contacts";
+import { existingFiles, existingLinks, existingMedia } from "@/utils";
 
 type ChatFooterProps = {
   scrollToBottom: () => void;
@@ -25,7 +26,15 @@ export default function ChatFooter({
 }: ChatFooterProps) {
   const { theme } = useAppContext();
   const { chats, setChats, refetchChats } = useChatContext();
-  const { user, setUser, messages, setMessages } = useChatMessageContext();
+  const {
+    user,
+    setUser,
+    messages,
+    setMessages,
+    reloadMedia,
+    reloadFiles,
+    reloadLinks,
+  } = useChatMessageContext();
 
   const [message, setMessage] = useState("");
   const [textareaHeight, setTextareaHeight] = useState(48);
@@ -94,6 +103,10 @@ export default function ChatFooter({
 
         setMessages([...messages, data]);
         refetchChats();
+
+        existingMedia(data.attachments) && reloadMedia(user);
+        existingFiles(data.attachments) && reloadFiles(user);
+        existingLinks(data.links) && reloadLinks(user);
 
         setTimeout(scrollToBottom, 300);
       })

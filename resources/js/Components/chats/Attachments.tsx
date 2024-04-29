@@ -5,6 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Fragment } from "react";
 import { BsFileEarmarkText, BsLink45Deg } from "react-icons/bs";
 import { formatFileSize } from "@/utils";
+import { Attachment } from "@/types/chat-message";
 
 type AttachmentsProps = {
   toggleShowMedia: boolean;
@@ -15,10 +16,15 @@ export default function Attachments({
   toggleShowMedia,
   setToggleShowMedia,
 }: AttachmentsProps) {
-  const { showSidebarRight, media, files, links } = useChatMessageContext();
+  const { showSidebarRight, media, setSelectedMedia, files, links } =
+    useChatMessageContext();
 
   const downloadFile = (url: string) => {
     window.open(url);
+  };
+
+  const openPopupGallery = (image: Attachment) => {
+    setSelectedMedia(image);
   };
 
   return (
@@ -94,6 +100,7 @@ export default function Attachments({
                     <div
                       key={image.file_name}
                       className="flex h-24 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-secondary"
+                      onClick={() => openPopupGallery(image)}
                     >
                       <img
                         src={`${image.file_path}/${image.file_name}`}

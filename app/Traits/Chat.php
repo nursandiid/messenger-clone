@@ -137,6 +137,18 @@ trait Chat
             ->orderByDesc('sort_id')
             ->paginate(25)
             ->setPath(route('chats.messages', $id));
+
+        foreach ($chats as $key => $chat) {
+            $result = preg_match_all($this->linkPattern, $chat->body, $matches);
+    
+            if ($result > 0) {
+                $chat->links = $matches[0];
+            } else {
+                $chat->links = [];
+            }
+
+            $chats[$key] = $chat;
+        }
             
         return $chats;
     }

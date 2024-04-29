@@ -1,0 +1,68 @@
+@import "react-image-gallery/styles/css/image-gallery.css";
+
+.image-gallery-slides {
+  @apply fixed top-0 bottom-0 left-0 right-0 my-auto h-[80vh];
+}
+
+.image-gallery-slide {
+  @apply cursor-auto h-[70vh] !flex justify-center items-center;
+}
+
+.image-gallery-slide .image-gallery-image {
+  @apply w-fit !max-h-[70vh] sm:!max-w-[80vw];
+}
+
+.image-gallery-thumbnails-wrapper {
+  @apply fixed bottom-0 left-0 right-0;
+}
+
+.image-gallery-thumbnail {
+  @apply w-[100px] h-[100px] rounded-lg overflow-hidden border-white/15;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus,
+.image-gallery-thumbnail:hover {
+  @apply border-primary;
+}
+
+.image-gallery-thumbnail-inner {
+  @apply h-full;
+}
+
+.image-gallery-thumbnail-image {
+  @apply object-cover object-center h-full;
+}
+
+.image-gallery-icon:hover {
+  @apply text-primary;
+}
+
+.image-gallery-icon {
+  @apply -mt-12;
+}
+
+.image-gallery-left-nav {
+  @apply fixed left-0 h-[70vh];
+}
+
+.image-gallery-right-nav {
+  @apply fixed right-0 h-[70vh];
+}
+
+.image-gallery-left-nav .image-gallery-svg,
+.image-gallery-right-nav .image-gallery-svg {
+  @apply h-[60px];
+}
+
+.image-gallery-loader-wrapper {
+  @apply flex flex-col fixed top-0 bottom-0 left-0 right-0;
+}
+
+.image-gallery-loader-original {
+  @apply text-6xl m-auto text-white/70 w-[70vw] h-[50vh] sm:h-[70vh] bg-black/70 dark:bg-secondary/90 flex justify-center items-center;
+}
+
+.image-gallery-loader-thumbnail {
+  @apply bg-black/70 text-white/70 text-2xl flex justify-center items-center shrink-0;
+}

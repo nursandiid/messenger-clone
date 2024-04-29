@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/chats/{id}/delete', [ChatsController::class, 'destroyAll'])->name('chats.destroy_all');
 
     Route::get('/chats/{id}/messages', [ChatsController::class, 'loadMessages'])->name('chats.messages');
+    Route::get('/chats/{id}/media', [ChatsController::class, 'loadMedia'])->name('chats.media');
+    Route::get('/chats/{id}/files', [ChatsController::class, 'loadFiles'])->name('chats.files');
+    Route::get('/chats/{id}/links', [ChatsController::class, 'loadLinks'])->name('chats.links');
 
     Route::post('/chats/{id}/read', [ChatsController::class, 'markAsRead'])->name('chats.mark_as_read');
     Route::post('/chats/{id}/unread', [ChatsController::class, 'markAsUnread'])->name('chats.mark_as_unread');

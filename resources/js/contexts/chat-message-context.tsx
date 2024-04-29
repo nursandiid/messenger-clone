@@ -1,5 +1,6 @@
-import { ChatMessagePageProps, ChatPageProps } from "@/types";
-import { Chat, CHAT_TYPE, ChatPaginate } from "@/types/chat";
+import { fetchFiles, fetchLinks, fetchMedia } from "@/api/chat-messages";
+import { ChatMessagePageProps } from "@/types";
+import { CHAT_TYPE } from "@/types/chat";
 import {
   Attachment,
   ChatMessage,
@@ -23,6 +24,7 @@ type State = {
   messages: ChatMessage[];
   paginate: ChatMessagePaginate;
   media: Attachment[];
+  selectedMedia?: Attachment;
   files: Attachment[];
   links: Link[];
   showSidebarRight: boolean;
@@ -30,8 +32,13 @@ type State = {
   setMessages: (value: ChatMessage[]) => void;
   setPaginate: (value: ChatMessagePaginate) => void;
   setMedia: (value: Attachment[]) => void;
+  setSelectedMedia: (value: Attachment) => void;
+  clearSelectedMedia: () => void;
   setFiles: (value: Attachment[]) => void;
   setLinks: (value: Link[]) => void;
+  reloadMedia: (user: ChatProfile) => void;
+  reloadFiles: (user: ChatProfile) => void;
+  reloadLinks: (user: ChatProfile) => void;
   toggleSidebarRight: () => void;
 };
 
@@ -54,6 +61,10 @@ type Action =
   | {
       type: "SET_MEDIA";
       payload: Attachment[];
+    }
+  | {
+      type: "SET_SELECTED_MEDIA";
+      payload?: Attachment;
     }
   | {
       type: "SET_FILES";
@@ -89,6 +100,7 @@ const initialState: State = {
   messages: [],
   paginate: InitialPaginate,
   media: [],
+  selectedMedia: undefined,
   files: [],
   links: [],
   showSidebarRight: false,
@@ -96,8 +108,13 @@ const initialState: State = {
   setMessages: () => {},
   setPaginate: () => {},
   setMedia: () => {},
+  setSelectedMedia: () => {},
+  clearSelectedMedia: () => {},
   setFiles: () => {},
   setLinks: () => {},
+  reloadMedia: () => {},
+  reloadFiles: () => {},
+  reloadLinks: () => {},
   toggleSidebarRight: () => {},
 };
 
@@ -137,6 +154,12 @@ const reducer = (state: State, action: Action) => {
         media: action.payload,
       };
 
+    case "SET_SELECTED_MEDIA":
+      return {
+        ...state,
+        selectedMedia: action.payload,
+      };
+
     case "SET_FILES":
       return {
         ...state,
@@ -172,11 +195,29 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
   const setMedia = (value: Attachment[]) =>
     dispatch({ type: "SET_MEDIA", payload: value });
 
+  const setSelectedMedia = (value: Attachment) =>
+    dispatch({ type: "SET_SELECTED_MEDIA", payload: value });
+
+  const clearSelectedMedia = () =>
+    dispatch({ type: "SET_SELECTED_MEDIA", payload: undefined });
+
   const setFiles = (value: Attachment[]) =>
     dispatch({ type: "SET_FILES", payload: value });
 
   const setLinks = (value: Link[]) =>
     dispatch({ type: "SET_LINKS", payload: value });
+
+  const reloadMedia = (user: ChatProfile) => {
+    fetchMedia(user).then((response) => setMedia(response.data.data));
+  };
+
+  const reloadFiles = (user: ChatProfile) => {
+    fetchFiles(user).then((response) => setFiles(response.data.data));
+  };
+
+  const reloadLinks = (user: ChatProfile) => {
+    fetchLinks(user).then((response) => setLinks(response.data.data));
+  };
 
   const toggleSidebarRight = () => dispatch({ type: "TOGGLE_SIDEBAR_RIGHT" });
 
@@ -203,8 +244,13 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
     setMessages,
     setPaginate,
     setMedia,
+    setSelectedMedia,
+    clearSelectedMedia,
     setFiles,
     setLinks,
+    reloadMedia,
+    reloadFiles,
+    reloadLinks,
     toggleSidebarRight,
   };
 

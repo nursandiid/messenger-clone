@@ -82,6 +82,39 @@ class ChatsController extends Controller
         }
     }
 
+    public function loadMedia(string $id) 
+    {
+        try {
+            $media = $this->media($id);
+
+            return $this->ok($media);
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+
+    public function loadFiles(string $id) 
+    {
+        try {
+            $files = $this->files($id);
+
+            return $this->ok($files);
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+
+    public function loadLinks(string $id) 
+    {
+        try {
+            $links = $this->links($id);
+
+            return $this->ok($links);
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -122,13 +155,20 @@ class ChatsController extends Controller
                 'from_id' => auth()->id(),
                 'to_id' => $request->to_id,
                 'to_type' => User::class,
-                'body' => $request->body,
+                'body' => $request->filled('body') ? markdown_template(htmlspecialchars($request->body)) : null,
                 'deleted_in_id' => $blockedUser?->is_contact_blocked ? json_encode([['id' => $blockedUser->user_id]]) : null
             ]);
 
             $chat->attachments()->createMany($attachments);
 
+            $links = [];
+            $result = preg_match_all($this->linkPattern, $chat->body, $matches);
+            if ($result > 0) {
+                $links[] = $matches[0];
+            }
+
             $chat->attachments = $chat->attachments;
+            $chat->links = $links;
 
             DB::commit();
 

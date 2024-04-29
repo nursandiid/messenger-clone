@@ -1,4 +1,9 @@
-import { Attachment, ChatMessage, ChatProfile } from "@/types/chat-message";
+import {
+  Attachment,
+  ChatMessage,
+  ChatProfile,
+  Link,
+} from "@/types/chat-message";
 import { AxiosResponse } from "axios";
 
 export const saveMessage = ({
@@ -38,4 +43,22 @@ export const deleteFileInChat = (
   return window.axios.delete(
     route("chats.delete_file", [message.id, attachment.file_name]),
   );
+};
+
+export const fetchMedia = (
+  user: ChatProfile,
+): Promise<AxiosResponse<{ data: Attachment[] }>> => {
+  return window.axios.get(route("chats.media", user.id));
+};
+
+export const fetchFiles = (
+  user: ChatProfile,
+): Promise<AxiosResponse<{ data: Attachment[] }>> => {
+  return window.axios.get(route("chats.files", user.id));
+};
+
+export const fetchLinks = (
+  user: ChatProfile,
+): Promise<AxiosResponse<{ data: Link[] }>> => {
+  return window.axios.get(route("chats.links", user.id));
 };

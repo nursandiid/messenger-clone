@@ -4,12 +4,14 @@ import { useChatContext } from "@/contexts/chat-context";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { useModalContext } from "@/contexts/modal-context";
 import { ChatMessage } from "@/types/chat-message";
+import { existingFiles, existingLinks, existingMedia } from "@/utils";
 import { Fragment } from "react";
 
 export default function DeleteMessageConfirmation() {
   const { closeModal, data: message } = useModalContext<ChatMessage>();
   const { refetchChats } = useChatContext();
-  const { messages, setMessages } = useChatMessageContext();
+  const { messages, setMessages, user, reloadMedia, reloadFiles, reloadLinks } =
+    useChatMessageContext();
 
   if (!message) return;
 
@@ -17,6 +19,10 @@ export default function DeleteMessageConfirmation() {
     deleteMessage(message).then(() => {
       refetchChats();
       setMessages([...messages.filter((m) => m.id !== message.id)]);
+
+      existingMedia(message.attachments) && reloadMedia(user);
+      existingFiles(message.attachments) && reloadFiles(user);
+      existingLinks(message.links) && reloadLinks(user);
 
       closeModal();
     });

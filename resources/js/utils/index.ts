@@ -1,3 +1,4 @@
+import { Attachment, Link } from "@/types/chat-message";
 import moment from "moment";
 
 export const relativeTime = (time: string) => {
@@ -47,4 +48,16 @@ export const formatFileSize = (size: number): string => {
   } else {
     return (size / (1024 * 1024 * 1024)).toFixed(2) + " GB";
   }
+};
+
+export const existingMedia = (attachments: Attachment[]) => {
+  return attachments.some((media) => isImageLinkValid(media.original_name));
+};
+
+export const existingFiles = (attachments: Attachment[]) => {
+  return attachments.some((media) => !isImageLinkValid(media.original_name));
+};
+
+export const existingLinks = (links: Link[]) => {
+  return links && links.length > 0;
 };

@@ -7,6 +7,7 @@ import SidebarMini from "@/layouts/partials/SidebarMini";
 import Sidebar from "@/components/chats/Sidebar";
 import Content from "@/components/chats/Content";
 import SidebarRight from "@/components/chats/SidebarRight";
+import PopupGallery from "@/components/chats/PopupGallery";
 
 export default function Chats() {
   return (
@@ -18,6 +19,8 @@ export default function Chats() {
             <Sidebar />
             <Content />
             <SidebarRight />
+
+            <PopupGallery />
           </ModalProvider>
         </ChatMessageProvider>
       </ChatProvider>
