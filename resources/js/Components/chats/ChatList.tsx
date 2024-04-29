@@ -5,8 +5,11 @@ import clsx from "clsx";
 import { relativeTime } from "@/utils";
 import { useChatContext } from "@/contexts/chat-context";
 import BadgeChatNotification from "@/components/chats/BadgeChatNotification";
-import { markAsRead } from "@/api/chats";
+import { fetchChatsInPaginate, markAsRead } from "@/api/chats";
 import ChatListAction from "@/components/chats/ChatListAction";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import { BsArrowClockwise } from "react-icons/bs";
 
 type ChatListProps = {
   search: string;
@@ -21,7 +24,19 @@ export default function ChatList({
   type,
   className,
 }: ChatListProps) {
-  const { chats } = useChatContext();
+  const { chats, setChats, paginate, setPaginate } = useChatContext();
+  const { ref: loadMoreRef, inView } = useInView();
+
+  useEffect(() => {
+    if (inView && loadMoreRef.length > 0) {
+      if (paginate.next_page_url) {
+        fetchChatsInPaginate(paginate.next_page_url).then((response) => {
+          setPaginate(response.data.data);
+          setChats([...chats, ...response.data.data.data]);
+        });
+      }
+    }
+  }, [inView, paginate]);
 
   const handleMarkAsRead = (chat: Chat) => {
     !chat.is_read && markAsRead(chat);
@@ -39,7 +54,7 @@ export default function ChatList({
       {chats
         .sort((a, b) => {
           if (search.length === 0)
-            return b.created_at.localeCompare(a.created_at);
+            return b.created_at?.localeCompare(a.created_at);
 
           return a.name.localeCompare(b.name);
         })
@@ -106,6 +121,12 @@ export default function ChatList({
             {!chat.is_read && <BadgeChatNotification />}
           </div>
         ))}
+
+      {paginate.next_page_url && (
+        <button className="mx-auto mt-4 flex" ref={loadMoreRef}>
+          <BsArrowClockwise className="animate-spin text-2xl text-secondary-foreground" />
+        </button>
+      )}
     </div>
   );
 }

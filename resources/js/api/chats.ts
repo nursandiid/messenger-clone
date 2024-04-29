@@ -8,6 +8,12 @@ export const fetchChats = (
   return window.axios.get(`${route("chats.users")}?query=${query || ""}`);
 };
 
+export const fetchChatsInPaginate = (
+  url: string,
+): Promise<AxiosResponse<{ data: ChatPaginate }>> => {
+  return window.axios.get(url);
+};
+
 export const markAsRead = (
   chat: Chat,
 ): Promise<AxiosResponse<{ data: Chat }>> => {

@@ -4,6 +4,10 @@ import { CHAT_TYPE } from "@/types/chat";
 import moment from "moment";
 import ChatMessages from "@/components/chats/ChatMessages";
 import SaveOrBlockContact from "@/components/chats/SaveOrBlockContact";
+import { useInView } from "react-intersection-observer";
+import { BsArrowClockwise } from "react-icons/bs";
+import { useEffect } from "react";
+import { fetchMessagesInPaginate } from "@/api/chat-messages";
 
 type ChatBodyProps = {
   chatContainerRef: React.RefObject<HTMLDivElement>;
@@ -19,7 +23,44 @@ export default function ChatBody({
   onDrop,
 }: ChatBodyProps) {
   const { auth } = useAppContext();
-  const { user } = useChatMessageContext();
+  const { user, messages, setMessages, paginate, setPaginate } =
+    useChatMessageContext();
+
+  const { ref: loadMoreRef, inView } = useInView();
+
+  useEffect(() => {
+    const inViewObserver = setTimeout(() => {
+      if (inView && loadMoreRef.length > 0) {
+        if (paginate.next_page_url) {
+          fetchMessagesInPaginate(paginate.next_page_url).then((response) => {
+            if (chatContainerRef.current) {
+              const {
+                scrollHeight: prevScrollHeight,
+                scrollTop: prevScrollTop,
+              } = chatContainerRef.current;
+
+              setPaginate(response.data.data);
+              setMessages([...messages, ...response.data.data.data]);
+
+              setTimeout(() => {
+                if (chatContainerRef.current) {
+                  const { scrollHeight } = chatContainerRef.current;
+                  const newScrollHeight = scrollHeight - prevScrollHeight;
+
+                  chatContainerRef.current.scrollTop =
+                    newScrollHeight + prevScrollTop;
+                }
+              }, 100);
+            }
+          });
+        }
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(inViewObserver);
+    };
+  }, [inView, paginate]);
 
   return (
     !onDrop && (
@@ -52,6 +93,12 @@ export default function ChatBody({
             )}
           </div>
         </div>
+
+        {paginate.next_page_url && (
+          <button className="mx-auto mt-4 flex" ref={loadMoreRef}>
+            <BsArrowClockwise className="animate-spin text-2xl text-secondary-foreground" />
+          </button>
+        )}
 
         <ChatMessages />
 

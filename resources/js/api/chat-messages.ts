@@ -1,6 +1,7 @@
 import {
   Attachment,
   ChatMessage,
+  ChatMessagePaginate,
   ChatProfile,
   Link,
 } from "@/types/chat-message";
@@ -43,6 +44,12 @@ export const deleteFileInChat = (
   return window.axios.delete(
     route("chats.delete_file", [message.id, attachment.file_name]),
   );
+};
+
+export const fetchMessagesInPaginate = (
+  url: string,
+): Promise<AxiosResponse<{ data: ChatMessagePaginate }>> => {
+  return window.axios.get(url);
 };
 
 export const fetchMedia = (
