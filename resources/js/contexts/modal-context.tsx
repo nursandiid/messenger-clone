@@ -1,5 +1,6 @@
 import Modal from "@/components/Modal";
 import BlockContactConfirmation from "@/components/modals/BlockContactConfirmation";
+import CustomizeChat from "@/components/modals/CustomizeChat";
 import DeleteChatConfirmation from "@/components/modals/DeleteChatConfirmation";
 import DeleteMessageConfirmation from "@/components/modals/DeleteMessageConfirmation";
 import Preferences from "@/components/modals/Preferences";
@@ -14,7 +15,8 @@ type ModalViews =
   | "PREFERENCES"
   | "DELETE_MESSAGE_CONFIRMATION"
   | "DELETE_CHAT_CONFIRMATION"
-  | "BLOCK_CONTACT_CONFIRMATION";
+  | "BLOCK_CONTACT_CONFIRMATION"
+  | "CUSTOMIZE_CHAT";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -31,6 +33,7 @@ type State<T = any> = {
   isOpen: boolean;
   openModal: <T>({ view, size, payload }: OpenModal<T>) => void;
   closeModal: () => void;
+  dispatchOnCanceled?: () => void;
 };
 
 type Action<T = any> =
@@ -56,6 +59,10 @@ const reducer = (state: State, action: Action) => {
         size: action.size,
         data: action.payload,
         isOpen: true,
+        dispatchOnCanceled:
+          action.payload &&
+          action.payload.dispatchOnCanceled &&
+          action.payload.dispatchOnCanceled,
       };
 
     case "CLOSE":
@@ -65,6 +72,7 @@ const reducer = (state: State, action: Action) => {
         size: undefined,
         data: undefined,
         isOpen: false,
+        dispatchOnCanceled: undefined,
       };
   }
 };
@@ -101,14 +109,24 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
 };
 
 export const ModalChildren = () => {
-  const { isOpen, view, size, closeModal } = useModalContext();
+  const { isOpen, view, size, closeModal, dispatchOnCanceled } =
+    useModalContext();
+
+  const handleOnClose = () => {
+    if (dispatchOnCanceled && typeof dispatchOnCanceled === "function") {
+      dispatchOnCanceled();
+    }
+
+    closeModal();
+  };
 
   return (
-    <Modal show={isOpen} onClose={closeModal} maxWidth={size}>
+    <Modal show={isOpen} onClose={handleOnClose} maxWidth={size}>
       {view === "PREFERENCES" && <Preferences />}
       {view === "DELETE_MESSAGE_CONFIRMATION" && <DeleteMessageConfirmation />}
       {view === "DELETE_CHAT_CONFIRMATION" && <DeleteChatConfirmation />}
       {view === "BLOCK_CONTACT_CONFIRMATION" && <BlockContactConfirmation />}
+      {view === "CUSTOMIZE_CHAT" && <CustomizeChat />}
     </Modal>
   );
 };

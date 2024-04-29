@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ArchivedChat;
 use App\Models\ChatContact;
 use App\Models\ChatMessage;
+use App\Models\ChatMessageColor;
 use App\Models\User;
 use App\Traits\Chat;
 use Illuminate\Http\Request;
@@ -43,6 +44,7 @@ class ChatsController extends Controller
 
             $user->is_contact_saved = auth()->user()->is_contact_saved($id);
             $user->is_contact_blocked = auth()->user()->is_contact_blocked($id);
+            $user->message_color = auth()->user()->message_color($id);
             $user->chat_type = ChatMessage::CHAT_TYPE;
 
             return Inertia::render('chats/Show', [
@@ -352,6 +354,35 @@ class ChatsController extends Controller
             DB::commit();
 
             return $this->ok($archivedChat);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->oops($e->getMessage());
+        }
+    }
+
+    public function customizeChat(Request $request, string $id) 
+    {
+        DB::beginTransaction();
+        try {
+            $chat = ChatMessageColor::where('from_id', auth()->id())
+                ->where('to_id', $id)
+                ->first();
+
+            if (!$chat) {
+                ChatMessageColor::create([
+                    'from_id' => auth()->id(),
+                    'to_id' => $id,
+                    'to_type' => User::class,
+                    'message_color' => $request->message_color
+                ]);
+            } else {
+                $chat->update($request->only('message_color'));
+            }
+
+            DB::commit();
+
+            return $this->ok($chat);
         } catch (\Exception $e) {
             DB::rollBack();
 

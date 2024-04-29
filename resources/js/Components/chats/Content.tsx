@@ -5,12 +5,15 @@ import ChatFooter from "@/components/chats/ChatFooter";
 import { useEffect, useRef, useState } from "react";
 import DragFileOverlay from "@/components/chats/DragFileOverlay";
 import PreviewOnDropFile from "@/components/chats/PreviewOnDropFile";
+import { useChatMessageContext } from "@/contexts/chat-message-context";
 
 export type Preview = File & {
   preview: string;
 };
 
 export default function Content() {
+  const { showSidebarRight } = useChatMessageContext();
+
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +68,8 @@ export default function Content() {
   return (
     <div
       className={clsx(
-        "relative order-3 flex h-full w-full flex-1 flex-col justify-between overflow-x-hidden border-secondary sm:border-l",
+        "relative order-3 h-full w-full flex-1 flex-col justify-between overflow-x-hidden border-secondary sm:border-l",
+        showSidebarRight ? "hidden lg:flex" : "flex",
       )}
       tabIndex={0}
       onDragEnter={() => setOnDrag(true)}

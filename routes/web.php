@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chats/{id}/unread', [ChatsController::class, 'markAsUnread'])->name('chats.mark_as_unread');
     Route::post('/chats/{id}/archive', [ChatsController::class, 'archiveChat'])->name('chats.archive');
     Route::post('/chats/{id}/unarchive', [ChatsController::class, 'unarchiveChat'])->name('chats.unarchive');
+    Route::post('/chats/{id}/customize', [ChatsController::class, 'customizeChat'])->name('chats.customize_chat');
 
     Route::get('/contacts', [ChatsController::class, 'index'])->name('contacts.index');
     Route::post('/contacts/{id}/save', [ContactsController::class, 'saveContact'])->name('contacts.save');

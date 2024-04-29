@@ -1,4 +1,5 @@
 import { Chat, ChatPaginate } from "@/types/chat";
+import { ChatProfile } from "@/types/chat-message";
 import { AxiosResponse } from "axios";
 
 export const fetchChats = (
@@ -29,4 +30,10 @@ export const deleteChat = (
   chat: Chat,
 ): Promise<AxiosResponse<{ data: Chat }>> => {
   return window.axios.delete(route("chats.destroy_all", chat.id));
+};
+
+export const customizeChat = (user: ChatProfile, message_color: string) => {
+  return window.axios.post(route("chats.customize_chat", user.id), {
+    message_color,
+  });
 };

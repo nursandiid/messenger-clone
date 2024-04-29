@@ -64,6 +64,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(ChatContact::class, 'user_id');
     }
+   
+    public function chat_message_colors() 
+    {
+        return $this->hasMany(ChatMessageColor::class, 'from_id');
+    }
 
     public function is_contact_saved(string $id) 
     {
@@ -79,5 +84,13 @@ class User extends Authenticatable
             ->where('contact_id', $id)
             ->first()
             ?->is_contact_blocked != null;
+    }
+
+    public function message_color(string $id) 
+    {
+        return $this->chat_message_colors()
+            ->where('to_id', $id)
+            ->first()
+            ?->message_color ?? null;
     }
 }

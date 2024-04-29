@@ -1,8 +1,13 @@
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import clsx from "clsx";
+import ProfileInformation from "@/components/chats/ProfileInformation";
+import Attachments from "@/components/chats/Attachments";
+import { useState } from "react";
 
 export default function SidebarRight() {
   const { showSidebarRight } = useChatMessageContext();
+  const [toggleCustomizeChat, setToggleCustomizeChat] = useState(false);
+  const [toggleShowMedia, setToggleShowMedia] = useState(false);
 
   return (
     <div
@@ -11,7 +16,17 @@ export default function SidebarRight() {
         showSidebarRight ? "flex" : "hidden",
       )}
     >
-      SidebarRight
+      <ProfileInformation
+        toggleCustomizeChat={toggleCustomizeChat}
+        toggleShowMedia={toggleShowMedia}
+        setToggleCustomizeChat={setToggleCustomizeChat}
+        setToggleShowMedia={setToggleShowMedia}
+      />
+
+      <Attachments
+        toggleShowMedia={toggleShowMedia}
+        setToggleShowMedia={setToggleShowMedia}
+      />
     </div>
   );
 }

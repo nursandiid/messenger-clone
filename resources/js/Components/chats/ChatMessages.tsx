@@ -6,6 +6,7 @@ import { CHAT_TYPE } from "@/types/chat";
 import { useAppContext } from "@/contexts/app-context";
 import { isImageLinkValid } from "@/utils";
 import ChatMessageAttachment from "@/components/chats/ChatMessageAttachment";
+import clsx from "clsx";
 
 export default function ChatMessages() {
   const { auth } = useAppContext();
@@ -83,7 +84,17 @@ export default function ChatMessages() {
                 <div className="text-sm text-white">
                   {message.body && (
                     <div className="group relative flex flex-row-reverse items-center gap-2">
-                      <div className="relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl bg-primary py-2 pl-4 pr-2 lg:max-w-md">
+                      <div
+                        className={clsx(
+                          "relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl py-2 pl-4 pr-2 lg:max-w-md",
+                          !user.message_color && "bg-primary",
+                        )}
+                        style={{
+                          background: user.message_color
+                            ? user.message_color
+                            : "",
+                        }}
+                      >
                         <p
                           dangerouslySetInnerHTML={{ __html: message.body }}
                           className="my-auto overflow-auto"
