@@ -50,7 +50,10 @@ class ChatsController extends Controller
             return Inertia::render('chats/Show', [
                 'user' => fn () => $user,
                 'chats' => fn () => $this->chats(),
-                'messages' => fn () => $this->messages($id)
+                'messages' => fn () => $this->messages($id),
+                'media' => fn () => $this->media($id),
+                'files' => fn () => $this->files($id),
+                'links' => fn () => $this->links($id),
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());

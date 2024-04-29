@@ -1,9 +1,11 @@
 import { ChatMessagePageProps, ChatPageProps } from "@/types";
 import { Chat, CHAT_TYPE, ChatPaginate } from "@/types/chat";
 import {
+  Attachment,
   ChatMessage,
   ChatMessagePaginate,
   ChatProfile,
+  Link,
 } from "@/types/chat-message";
 import { InitialPaginate } from "@/types/paginate";
 import { usePage } from "@inertiajs/react";
@@ -20,10 +22,16 @@ type State = {
   user: ChatProfile;
   messages: ChatMessage[];
   paginate: ChatMessagePaginate;
+  media: Attachment[];
+  files: Attachment[];
+  links: Link[];
   showSidebarRight: boolean;
   setUser: (value: ChatProfile) => void;
   setMessages: (value: ChatMessage[]) => void;
   setPaginate: (value: ChatMessagePaginate) => void;
+  setMedia: (value: Attachment[]) => void;
+  setFiles: (value: Attachment[]) => void;
+  setLinks: (value: Link[]) => void;
   toggleSidebarRight: () => void;
 };
 
@@ -42,6 +50,18 @@ type Action =
   | {
       type: "SET_PAGINATE";
       payload: ChatMessagePaginate;
+    }
+  | {
+      type: "SET_MEDIA";
+      payload: Attachment[];
+    }
+  | {
+      type: "SET_FILES";
+      payload: Attachment[];
+    }
+  | {
+      type: "SET_LINKS";
+      payload: Link[];
     };
 
 const initialState: State = {
@@ -68,10 +88,16 @@ const initialState: State = {
   },
   messages: [],
   paginate: InitialPaginate,
+  media: [],
+  files: [],
+  links: [],
   showSidebarRight: false,
   setUser: () => {},
   setMessages: () => {},
   setPaginate: () => {},
+  setMedia: () => {},
+  setFiles: () => {},
+  setLinks: () => {},
   toggleSidebarRight: () => {},
 };
 
@@ -92,6 +118,7 @@ const reducer = (state: State, action: Action) => {
         ...state,
         showSidebarRight: !value,
       };
+
     case "SET_MESSAGES":
       return {
         ...state,
@@ -102,6 +129,24 @@ const reducer = (state: State, action: Action) => {
       return {
         ...state,
         paginate: action.payload,
+      };
+
+    case "SET_MEDIA":
+      return {
+        ...state,
+        media: action.payload,
+      };
+
+    case "SET_FILES":
+      return {
+        ...state,
+        files: action.payload,
+      };
+
+    case "SET_LINKS":
+      return {
+        ...state,
+        links: action.payload,
       };
   }
 };
@@ -124,6 +169,15 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
   const setPaginate = (value: ChatMessagePaginate) =>
     dispatch({ type: "SET_PAGINATE", payload: value });
 
+  const setMedia = (value: Attachment[]) =>
+    dispatch({ type: "SET_MEDIA", payload: value });
+
+  const setFiles = (value: Attachment[]) =>
+    dispatch({ type: "SET_FILES", payload: value });
+
+  const setLinks = (value: Link[]) =>
+    dispatch({ type: "SET_LINKS", payload: value });
+
   const toggleSidebarRight = () => dispatch({ type: "TOGGLE_SIDEBAR_RIGHT" });
 
   useEffect(() => {
@@ -131,6 +185,9 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
     setUser(props.user);
     setMessages(props.messages.data);
     setPaginate(props.messages);
+    setMedia(props.media);
+    setFiles(props.files);
+    setLinks(props.links);
   }, []);
 
   const value = {
@@ -138,10 +195,16 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
     user: isFirstLoading ? props.user : state.user,
     messages: isFirstLoading ? props.messages.data : state.messages,
     paginate: isFirstLoading ? props.messages : state.paginate,
+    media: isFirstLoading ? props.media : state.media,
+    files: isFirstLoading ? props.files : state.files,
+    links: isFirstLoading ? props.links : state.links,
     showSidebarRight: localStorage.getItem("toggle-sidebar-right") === "true",
     setUser,
     setMessages,
     setPaginate,
+    setMedia,
+    setFiles,
+    setLinks,
     toggleSidebarRight,
   };
 
