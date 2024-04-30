@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -92,5 +93,15 @@ class User extends Authenticatable
             ->where('to_id', $id)
             ->first()
             ?->message_color ?? null;
+    }
+
+    public function scopeOnline(Builder $query) 
+    {
+        $query->where('is_online', true);
+    }
+
+    public function scopeInactive(Builder $query) 
+    {
+        $query->online()->where('last_seen', '<', now()->subSeconds(10));
     }
 }
