@@ -5,6 +5,7 @@ import CustomizeChat from "@/components/modals/CustomizeChat";
 import DeleteChatConfirmation from "@/components/modals/DeleteChatConfirmation";
 import DeleteMessageConfirmation from "@/components/modals/DeleteMessageConfirmation";
 import EditGroup from "@/components/modals/EditGroup";
+import ExitGroupConfirmation from "@/components/modals/ExitGroupConfirmation";
 import Preferences from "@/components/modals/Preferences";
 import {
   createContext,
@@ -20,7 +21,8 @@ type ModalViews =
   | "BLOCK_CONTACT_CONFIRMATION"
   | "CUSTOMIZE_CHAT"
   | "ADD_NEW_GROUP"
-  | "EDIT_GROUP";
+  | "EDIT_GROUP"
+  | "EXIT_GROUP_CONFIRMATION";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "2xl";
 
@@ -133,6 +135,7 @@ export const ModalChildren = () => {
       {view === "CUSTOMIZE_CHAT" && <CustomizeChat />}
       {view === "ADD_NEW_GROUP" && <AddNewGroup />}
       {view === "EDIT_GROUP" && <EditGroup />}
+      {view === "EXIT_GROUP_CONFIRMATION" && <ExitGroupConfirmation />}
     </Modal>
   );
 };

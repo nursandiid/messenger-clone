@@ -377,7 +377,7 @@ class ChatsController extends Controller
 
             ArchivedChat::create([
                 'from_id' => $id,
-                'from_type' => User::class,
+                'from_type' => User::find($id) ? User::class : ChatGroup::class,
                 'archived_by' => auth()->id()
             ]);
 

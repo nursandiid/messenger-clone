@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/group', [GroupController::class, 'store'])->name('group.store');
     Route::get('/group/{id}', [GroupController::class, 'members'])->name('group.members');
     Route::patch('/group/{id}', [GroupController::class, 'update'])->name('group.update');
+    Route::delete('/group/{id}', [GroupController::class, 'exit'])->name('group.exit');
 
     Route::get('/contacts', [ChatsController::class, 'index'])->name('contacts.index');
     Route::post('/contacts/{id}/save', [ContactsController::class, 'saveContact'])->name('contacts.save');

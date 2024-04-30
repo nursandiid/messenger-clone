@@ -121,4 +121,30 @@ class GroupController extends Controller
             dd($e->getMessage());
         }
     }
+
+    public function exit(string $id) 
+    {
+        DB::beginTransaction();
+        try {
+            $group = ChatGroup::find($id);
+            if (!$group) {
+                throw new \Exception('Group not found');
+            }
+
+            $group->group_members()->where('member_id', auth()->id())->delete();
+            if ($group->creator_id === auth()->id() && $group->group_members()->count() > 0) {
+                $group->update([
+                    'creator_id' => $group->group_members()->first()?->member_id
+                ]);
+            } else {
+                $group->delete();
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $this->oops($e->getMessage());
+        }
+    }
 }
