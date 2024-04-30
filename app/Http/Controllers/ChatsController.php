@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ArchivedChat;
 use App\Models\ChatContact;
+use App\Models\ChatGroup;
 use App\Models\ChatMessage;
 use App\Models\ChatMessageColor;
 use App\Models\User;
@@ -38,14 +39,24 @@ class ChatsController extends Controller
     {
         try {
             $user = User::find($id);
-            if (!$user) {
-                throw new \Exception('User not found');
+            $group = ChatGroup::find($id);
+
+            if (!$user && !$group) {
+                throw new \Exception('User or group not found');
             }
 
-            $user->is_contact_saved = auth()->user()->is_contact_saved($id);
-            $user->is_contact_blocked = auth()->user()->is_contact_blocked($id);
+            if ($user) {
+                $user->is_contact_saved = auth()->user()->is_contact_saved($id);
+                $user->is_contact_blocked = auth()->user()->is_contact_blocked($id);
+                $user->chat_type = ChatMessage::CHAT_TYPE;
+            } else if ($group) {
+                $user = $group;
+                $user->creator = $group->creator;
+                $user->chat_type = ChatMessage::CHAT_GROUP_TYPE;
+                $user->members_count = $group->group_members->count();
+            }
+
             $user->message_color = auth()->user()->message_color($id);
-            $user->chat_type = ChatMessage::CHAT_TYPE;
 
             return Inertia::render('chats/Show', [
                 'user' => fn () => $user,
@@ -154,7 +165,7 @@ class ChatsController extends Controller
             $chat = ChatMessage::create([
                 'from_id' => auth()->id(),
                 'to_id' => $request->to_id,
-                'to_type' => User::class,
+                'to_type' => User::find($request->to_id) ? User::class : ChatGroup::class,
                 'body' => $request->filled('body') ? markdown_template(htmlspecialchars($request->body)) : null,
                 'deleted_in_id' => $blockedUser?->is_contact_blocked ? json_encode([['id' => $blockedUser->user_id]]) : null
             ]);

@@ -82,7 +82,7 @@ export default function PopupGallery() {
                 </div>
               </div>
               <button
-                className="flex items-center justify-center rounded-lg border-2 border-secondary/25 p-1 text-xl text-gray-50 transition-all hover:scale-105 hover:border-primary hover:text-primary focus-visible:outline-none dark:border-secondary/75 dark:hover:border-r-primary"
+                className="flex items-center justify-center rounded-lg border-2 border-secondary/25 p-1 text-xl text-gray-50 transition-all hover:scale-105 hover:border-primary hover:text-primary focus-visible:outline-none dark:border-secondary/75 dark:hover:border-primary"
                 onClick={clearSelectedMedia}
               >
                 <BsXLg />

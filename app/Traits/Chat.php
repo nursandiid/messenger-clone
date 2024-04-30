@@ -2,8 +2,10 @@
 
 namespace App\Traits;
 
+use App\Models\ChatGroup;
 use App\Models\ChatMessage;
 use App\Models\ChatMessageFile;
+use App\Models\GroupMember;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
@@ -16,18 +18,32 @@ trait Chat
 
     public function chats() 
     {
+        $group = GroupMember::where('member_id', auth()->id())
+            ->select('member_id', 'group_id')
+            ->groupBy('member_id', 'group_id');
+
         if (request()->filled('query')) {
-            $chats = User::where('name', 'LIKE', '%'. request('query') .'%')
+            $chatGroup = ChatGroup::joinSub($group, 'g', function (JoinClause $join) {
+                    $join->on('chat_groups.id', 'g.group_id');
+                })
+                ->where('name', 'LIKE', '%'. request('query') .'%')
+                ->select('id', 'name', 'avatar', 'member_id');
+
+            $chats = User::leftJoinSub($chatGroup, 'cg', function (JoinClause $join) {
+                    $join->on('cg.member_id', 'users.id')  ;
+                })
+                ->where('users.name', 'LIKE', '%'. request('query') .'%')
+                ->orWhere('cg.name', 'LIKE', '%'. request('query') .'%')
                 ->selectRaw('
-                    id,
-                    name,
-                    avatar,
+                    IFNULL (cg.id, users.id) as id,
+                    IFNULL (cg.name, users.name) as name,
+                    IFNULL (cg.avatar, users.avatar) as avatar,
                     NULL as message_id,
                     NULL as body,
                     1 as is_read,
                     0 as is_reply,
-                    IF (is_online = 1 AND active_status = 1, 1, 0) as is_online,
-                    active_status,
+                    IF (cg.id IS NULL AND users.is_online = 1 AND users.active_status = 1, 1, 0) as is_online,
+                    IF (cg.id IS NULL, active_status, 0) as active_status,
                     NULL as created_at,
                     ? as chat_type
                 ', 
@@ -36,14 +52,22 @@ trait Chat
                 ->withQueryString()
                 ->setPath(route('chats.users'));
         } else {
-            $latestMessage = ChatMessage::where(function (Builder $query) {
-                $query->where('from_id', auth()->id())
-                      ->orWhere('to_id', auth()->id());
+            $latestMessage = ChatMessage::leftJoinSub($group, 'g', function (JoinClause $join) {
+                    $join->on('chat_messages.to_id', 'g.group_id');
+                })
+                ->where(function (Builder $query) use ($group) {
+                    $query->where(function (Builder $query) {
+                            $query->where('from_id', auth()->id())
+                                  ->orWhere('to_type', User::class);
+                         })
+                         ->orWhere('to_id', auth()->id())
+                         ->orWhereIn('to_id', $group->pluck('group_id')->toArray());
                 })
                 ->deletedInIds()
                 ->selectRaw("
                     MAX(sort_id) as sort_id,
                     CASE
+                        WHEN g.group_id IS NOT NULL THEN chat_messages.to_id
                         WHEN from_id = '". auth()->id() ."' THEN to_id
                         ELSE from_id
                     END as another_user_id
@@ -62,9 +86,10 @@ trait Chat
                     $join->on('ac.from_id', 'lm.another_user_id')
                          ->where('ac.archived_by', auth()->id());
                 })
-                ->where(function (Builder $query) {
+                ->where(function (Builder $query) use ($group) {
                     $query->where('chat_messages.from_id', auth()->id())
-                          ->orWhere('chat_messages.to_id', auth()->id());
+                          ->orWhere('chat_messages.to_id', auth()->id())
+                          ->orWhereIn('to_id', $group->pluck('group_id')->toArray());
                 })
                 ->whereNull('ac.id')
                 ->select('chat_messages.*', 'lm.another_user_id')
@@ -87,20 +112,41 @@ trait Chat
                 $mapped = new \stdClass;
                 $seenInId = collect(json_decode($chat->seen_in_id));
 
-                $mapped->id = $chat->another_user->id;
-                $mapped->name = $chat->another_user->name . ($chat->another_user->id === auth()->id() ? ' (You)' : '');
-                $mapped->avatar = $chat->another_user->avatar;
-                $mapped->from_id = $chat->from_id;
-                $mapped->is_read = $seenInId->filter(fn ($item) => $item->id === auth()->id())->count() > 0;
-                $mapped->is_reply = $chat->another_user->id === $chat->from_id;
-                $mapped->is_online = $chat->another_user->is_online == true;
-                $mapped->is_contact_blocked = auth()->user()->is_contact_blocked($chat->another_user->id);
-                $mapped->chat_type = ChatMessage::CHAT_TYPE;
-                $mapped->created_at = $chat->created_at;
+                if ($chat->to instanceof User) {
+                    $mapped->id = $chat->another_user->id;
+                    $mapped->name = $chat->another_user->name . ($chat->another_user->id === auth()->id() ? ' (You)' : '');
+                    $mapped->avatar = $chat->another_user->avatar;
+                    $mapped->from_id = $chat->from_id;
+                    $mapped->is_read = $seenInId->filter(fn ($item) => $item->id === auth()->id())->count() > 0;
+                    $mapped->is_reply = $chat->another_user->id === $chat->from_id;
+                    $mapped->is_online = $chat->another_user->is_online == true;
+                    $mapped->is_contact_blocked = auth()->user()->is_contact_blocked($chat->another_user->id);
+                    $mapped->chat_type = ChatMessage::CHAT_TYPE;
+                    $mapped->created_at = $chat->created_at;
 
-                $mapped->body = $chat->body
+                    $mapped->body = $chat->body
                     ? $from . \Str::limit(strip_tags($chat->body), 100)
                     : $attachment;
+                } else {
+                    $mapped->id = $chat->to->id;
+                    $mapped->name = $chat->to->name;
+                    $mapped->avatar = $chat->to->avatar;
+                    $mapped->from_id = $chat->from_id;
+                    $mapped->is_read = $seenInId->filter(fn ($item) => $item->id === auth()->id())->count() > 0;
+                    $mapped->is_reply = $chat->from_id !== auth()->id();
+                    $mapped->is_online = false;
+                    $mapped->is_contact_blocked = false;
+                    $mapped->chat_type = ChatMessage::CHAT_GROUP_TYPE;
+                    $mapped->created_at = $chat->created_at;
+
+                    if (str_contains($chat->body, 'created group "'. $chat->to->name .'"') && $chat->to->creator_id !== auth()->id()) {
+                        $mapped->body = 'You: invited by ' . $chat->to?->creator?->name;
+                    } else {
+                        $mapped->body = $chat->body
+                        ? $from . \Str::limit(strip_tags($chat->body), 100)
+                        : $attachment;
+                    }
+                }
 
                 $chats[$key] = $mapped;
             }

@@ -4,10 +4,20 @@ import ChatListSearch from "@/components/chats/ChatListSearch";
 import ChatList from "@/components/chats/ChatList";
 import { useChatContext } from "@/contexts/chat-context";
 import clsx from "clsx";
+import { useModalContext } from "@/contexts/modal-context";
 
 export default function Sidebar() {
   const { chats } = useChatContext();
+  const { openModal } = useModalContext();
+
   const [search, setSearch] = useState("");
+
+  const addNewGroup = () => {
+    openModal({
+      view: "ADD_NEW_GROUP",
+      size: "lg",
+    });
+  };
 
   return (
     <div
@@ -18,7 +28,10 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-between px-2 pt-2 sm:pb-0">
         <h3 className="text-2xl font-semibold">Chats</h3>
-        <button className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
+        <button
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white"
+          onClick={addNewGroup}
+        >
           <FaUsers />
         </button>
       </div>

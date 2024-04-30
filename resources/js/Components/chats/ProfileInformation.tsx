@@ -1,5 +1,6 @@
 import { useChatMessageContext } from "@/contexts/chat-message-context";
 import { useModalContext } from "@/contexts/modal-context";
+import { CHAT_TYPE } from "@/types/chat";
 import { Transition } from "@headlessui/react";
 import clsx from "clsx";
 import {
@@ -8,6 +9,7 @@ import {
   BsRecordCircle,
   BsXLg,
 } from "react-icons/bs";
+import { FaInfoCircle } from "react-icons/fa";
 
 type ProfileInformationProps = {
   toggleCustomizeChat: boolean;
@@ -33,6 +35,14 @@ export default function ProfileInformation({
       payload: {
         dispatchOnCanceled: () => setUser({ ...user }),
       },
+    });
+  };
+
+  const editGroup = () => {
+    openModal({
+      view: "EDIT_GROUP",
+      size: "lg",
+      payload: user,
     });
   };
 
@@ -67,6 +77,26 @@ export default function ProfileInformation({
         />
 
         <h5 className="font-medium">{user.name}</h5>
+
+        {user.chat_type === CHAT_TYPE.GROUP_CHATS && (
+          <div>
+            <div className="text-sm text-secondary-foreground">
+              Group . {user.members_count} members
+            </div>
+            <div className="text-sm text-secondary-foreground">
+              {user.description}
+            </div>
+            <button
+              className="btn btn-secondary btn-close rounded-full text-base focus:ring-0"
+              onClick={editGroup}
+            >
+              <FaInfoCircle
+                className={clsx(!user.message_color && "!text-primary")}
+                style={{ color: user.message_color }}
+              />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="px-2">

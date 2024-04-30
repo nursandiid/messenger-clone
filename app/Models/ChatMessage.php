@@ -68,6 +68,10 @@ class ChatMessage extends Model
 
     public function scopeForUserOrGroup(Builder $query, string $id) 
     {
+        $group = GroupMember::where('member_id', auth()->id())
+            ->select('member_id', 'group_id')
+            ->groupBy('member_id', 'group_id');
+
         $query->where(function (Builder $query) use ($id) {
                 $query->where('from_id', auth()->id())
                       ->where('to_id', $id);
@@ -75,6 +79,11 @@ class ChatMessage extends Model
             ->orWhere(function (Builder $query) use ($id) {
                 $query->where('from_id', $id)
                       ->where('to_id', auth()->id());
+            })
+            ->orWhere(function (Builder $query) use ($id, $group) {
+                $query->where('to_type', ChatGroup::class)
+                      ->where('to_id', $id)
+                      ->whereIn('to_id', $group->pluck('group_id')?->toArray());
             });
     }
 

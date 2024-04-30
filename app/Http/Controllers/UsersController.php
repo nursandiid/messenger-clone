@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\DB;
 class UsersController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        try {
+            $users = User::whereNot('id', auth()->id())
+                ->where('name', 'LIKE', '%'. request('query') .'%')
+                ->select('id', 'name')
+                ->get();
+
+            return $this->ok($users);
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+    
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)

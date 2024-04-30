@@ -38,6 +38,11 @@ export default function ChatMessages() {
           (attachment) => !isImageLinkValid(attachment.original_name),
         );
 
+        const showProfile =
+          (message.chat_type === CHAT_TYPE.GROUP_CHATS &&
+            messages[index]?.from_id !== message.from_id) ||
+          (message.chat_type === CHAT_TYPE.GROUP_CHATS && index === 0);
+
         return (
           <Fragment key={`message-${message.id}`}>
             {(isFirstMessage || isDifferentDate) && (
@@ -46,19 +51,36 @@ export default function ChatMessages() {
               </p>
             )}
 
-            {message.from_id === user.id && message.from_id !== auth.id ? (
+            {(message.from_id === user.id && message.from_id !== auth.id) ||
+            (message.chat_type === CHAT_TYPE.GROUP_CHATS &&
+              message.from_id !== auth.id) ? (
               <div className="flex flex-row justify-start">
                 <div className="text-sm text-foreground">
                   {message.body && (
                     <div className="group relative flex items-center gap-2">
-                      <div className="relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl bg-secondary py-2 pl-2 pr-4 text-sm lg:max-w-md">
-                        <p
-                          dangerouslySetInnerHTML={{ __html: message.body }}
-                          className="my-auto overflow-auto"
-                        />
-                        <span className="-mt-4 ml-auto text-xs text-secondary-foreground">
-                          {date.format("H:mm")}
-                        </span>
+                      <div>
+                        {showProfile && (
+                          <div className="mb-1 mt-2 flex items-center gap-2">
+                            <img
+                              src={message.from.avatar}
+                              alt={message.from.name}
+                              className="h-6 w-6 rounded-full border border-secondary"
+                            />
+                            <p className="text-sm font-medium">
+                              {message.from.name}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="relative flex max-w-xs flex-wrap items-end gap-2 rounded-2xl bg-secondary py-2 pl-2 pr-4 text-sm lg:max-w-md">
+                          <p
+                            dangerouslySetInnerHTML={{ __html: message.body }}
+                            className="my-auto overflow-auto"
+                          />
+                          <span className="-mt-4 ml-auto text-xs text-secondary-foreground">
+                            {date.format("H:mm")}
+                          </span>
+                        </div>
                       </div>
 
                       <DeleteMessage message={message} />
