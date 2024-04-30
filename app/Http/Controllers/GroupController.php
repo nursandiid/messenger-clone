@@ -138,6 +138,7 @@ class GroupController extends Controller
                 ]);
             } else {
                 $group->delete();
+                ChatMessage::where('to_id', $group->id)->delete();
             }
 
             DB::commit();
