@@ -2,7 +2,7 @@ import { PropsWithChildren, ReactNode } from "react";
 import ApplicationLogo from "@/components/ApplicationLogo";
 import NavLink from "@/components/NavLink";
 import { Link } from "@inertiajs/react";
-import { User } from "@/types";
+import { User } from "@/types/user";
 import { BsBoxArrowRight } from "react-icons/bs";
 
 export default function Authenticated({

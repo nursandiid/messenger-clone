@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./echo";
 import "../css/app.css";
 import "../css/emoji.css";
 import "../css/image-gallery.css";
