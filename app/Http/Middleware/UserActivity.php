@@ -10,6 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserActivity
 {
+    protected $except = [
+        'chats.users',
+        'chats.message',
+        'chats.media',
+        'chats.files',
+        'chats.links',
+    ];
+
     /**
      * Handle an incoming request.
      *
@@ -17,19 +25,19 @@ class UserActivity
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
+        if (Auth::check() && !in_array($request->route()->getName(), $this->except)) {
             Auth::user()->update([
                 'last_seen' => now(),
                 'is_online' => true
             ]);
 
-            $expiresAt = now()->addMinutes(1);
+            $expiresAt = now()->seconds(10);
             $key = 'user-online' . Auth::id();
 
             if (!Cache::has($key)) {
                 Cache::put($key, true, $expiresAt);
 
-                // TODO: send user activity event
+                event(new \App\Events\UserActivity(Auth::user()));
             } else {
                 Cache::put($key, true, $expiresAt);
             }

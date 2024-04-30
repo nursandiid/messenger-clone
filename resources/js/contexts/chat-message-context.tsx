@@ -1,4 +1,9 @@
-import { fetchFiles, fetchLinks, fetchMedia } from "@/api/chat-messages";
+import {
+  fetchFiles,
+  fetchLinks,
+  fetchMedia,
+  fetchMessages,
+} from "@/api/chat-messages";
 import { ChatMessagePageProps } from "@/types";
 import { CHAT_TYPE } from "@/types/chat";
 import {
@@ -9,6 +14,7 @@ import {
   Link,
 } from "@/types/chat-message";
 import { InitialPaginate } from "@/types/paginate";
+import { existingFiles, existingLinks, existingMedia } from "@/utils";
 import { usePage } from "@inertiajs/react";
 import {
   createContext,
@@ -221,6 +227,21 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
 
   const toggleSidebarRight = () => dispatch({ type: "TOGGLE_SIDEBAR_RIGHT" });
 
+  const refetchMessages = () => {
+    fetchMessages(props.user).then((response) => {
+      setPaginate(response.data.data);
+      setMessages(response.data.data.data);
+    });
+  };
+
+  const syncAll = (data: { chat: ChatMessage }) => {
+    refetchMessages();
+
+    existingMedia(data.chat.attachments) && reloadMedia(props.user);
+    existingFiles(data.chat.attachments) && reloadFiles(props.user);
+    existingLinks(data.chat.links) && reloadLinks(props.user);
+  };
+
   useEffect(() => {
     setIsFirstLoading(false);
     setUser(props.user);
@@ -229,6 +250,23 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
     setMedia(props.media);
     setFiles(props.files);
     setLinks(props.links);
+
+    window.Echo.channel(`user-activity`).listen(
+      ".user-activity",
+      (data: { user: ChatProfile }) => {
+        const user = state.user.id ? state.user : props.user;
+        setUser({ ...user, is_online: data.user.is_online });
+      },
+    );
+
+    window.Echo.channel(
+      `send-message-${props.user.id}-to-${props.auth.id}`,
+    ).listen(".send-message", syncAll);
+
+    window.Echo.channel(`send-group-message-${props.user.id}`).listen(
+      ".send-group-message",
+      syncAll,
+    );
   }, []);
 
   const value = {

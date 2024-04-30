@@ -181,6 +181,25 @@ class ChatsController extends Controller
             $chat->attachments = $chat->attachments;
             $chat->links = $links;
 
+            $from = auth()->user();
+            if ($chat->to instanceof User) {
+                $to = User::find($request->to_id);
+
+                if (!$blockedUser || !$blockedUser->is_contact_blocked) {
+                    event(new \App\Events\SendMessage($from, $to, $chat));
+                }
+            } else {
+                // TODO: send notification to group members
+                $memberIds = $chat->to->group_members->pluck('member_id')->toArray();
+                $toMembers = User::whereIn('id', $memberIds)->get();
+
+                foreach ($toMembers as $to) {
+                    event(new \App\Events\SendMessage($from, $to, $chat));
+                }
+
+                event(new \App\Events\SendGroupMessage($request->to_id, $chat));
+            }
+
             DB::commit();
 
             return $this->ok(data: $chat, code: 201);

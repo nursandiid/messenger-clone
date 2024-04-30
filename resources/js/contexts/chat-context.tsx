@@ -1,6 +1,7 @@
 import { fetchChats } from "@/api/chats";
 import { ChatPageProps } from "@/types";
 import { Chat, ChatPaginate } from "@/types/chat";
+import { ChatProfile } from "@/types/chat-message";
 import { InitialPaginate } from "@/types/paginate";
 import { usePage } from "@inertiajs/react";
 import {
@@ -77,6 +78,21 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
     setIsFirstLoading(false);
     setChats(props.chats.data);
     setPaginate(props.chats);
+
+    window.Echo.channel(`user-activity`).listen(
+      ".user-activity",
+      (data: { user: ChatProfile }) => {
+        const chats = state.chats.length > 0 ? state.chats : props.chats.data;
+        const existingChat = chats.find((chat) => chat.id === data.user.id);
+
+        existingChat && refetchChats();
+      },
+    );
+
+    window.Echo.channel(`send-message-${props.auth.id}`).listen(
+      ".send-message",
+      refetchChats,
+    );
   }, []);
 
   const value = {

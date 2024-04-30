@@ -46,6 +46,12 @@ export const deleteFileInChat = (
   );
 };
 
+export const fetchMessages = (
+  user: ChatProfile,
+): Promise<AxiosResponse<{ data: ChatMessagePaginate }>> => {
+  return window.axios.get(route("chats.messages", user.id));
+};
+
 export const fetchMessagesInPaginate = (
   url: string,
 ): Promise<AxiosResponse<{ data: ChatMessagePaginate }>> => {

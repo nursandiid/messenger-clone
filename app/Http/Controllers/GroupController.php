@@ -40,12 +40,19 @@ class GroupController extends Controller
 
             $group->group_members()->createMany($groupMembers);
 
-            ChatMessage::create([
+            $chat = ChatMessage::create([
                 'from_id' => auth()->id(),
                 'to_id' => $group->id,
                 'to_type' => ChatGroup::class,
                 'body' => 'created group "'. $group->name .'"'
             ]);
+
+            $from = auth()->user();
+            $toMembers = User::whereIn('id', $request->group_members)->get();
+
+            foreach ($toMembers as $to) {
+                event(new \App\Events\SendMessage($from, $to, $chat));
+            }
     
             DB::commit();
 
