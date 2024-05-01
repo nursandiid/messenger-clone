@@ -24,7 +24,9 @@ class ContactsController extends Controller
                 'contacts' => $contacts
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 

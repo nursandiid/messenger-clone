@@ -37,7 +37,7 @@ export default function ChatListAction({ chat }: ActionProps) {
 }
 
 const Action = ({ chat }: ActionProps) => {
-  const { auth } = useAppContext();
+  const { auth, syncNotification } = useAppContext();
   const { chats, setChats, refetchChats } = useChatContext();
   const { user, setUser } = useChatMessageContext();
   const { openModal } = useModalContext();
@@ -59,6 +59,8 @@ const Action = ({ chat }: ActionProps) => {
           return c;
         }),
       );
+
+      syncNotification();
     });
   };
 
@@ -73,18 +75,22 @@ const Action = ({ chat }: ActionProps) => {
           return c;
         }),
       );
+
+      syncNotification();
     });
   };
 
   const handleArchiveChat = () => {
     archiveChat(chat).then(() => {
       refetchChats();
+      syncNotification();
     });
   };
 
   const handleUnarchiveChat = () => {
     unarchiveChat(chat).then(() => {
       refetchChats();
+      syncNotification();
     });
   };
 

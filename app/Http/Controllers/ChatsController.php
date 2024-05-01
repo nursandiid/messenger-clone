@@ -28,7 +28,9 @@ class ChatsController extends Controller
                 'chats' => fn () => $this->chats()
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 
@@ -67,7 +69,9 @@ class ChatsController extends Controller
                 'links' => fn () => $this->links($id),
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 
@@ -77,6 +81,17 @@ class ChatsController extends Controller
             $chats = $this->chats();
 
             return $this->ok($chats);
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+
+    public function loadNotification() 
+    {
+        try {
+            $notificationCount = $this->notificationCount();
+
+            return $this->ok(['notification_count' => $notificationCount]);
         } catch (\Exception $e) {
             return $this->oops($e->getMessage());
         }
@@ -190,7 +205,10 @@ class ChatsController extends Controller
                 }
             } else {
                 // TODO: send notification to group members
-                $memberIds = $chat->to->group_members->pluck('member_id')->toArray();
+                $memberIds = $chat->to->group_members()
+                    ->whereNot('member_id', auth()->id())
+                    ->pluck('member_id')
+                    ->toArray();
                 $toMembers = User::whereIn('id', $memberIds)->get();
 
                 foreach ($toMembers as $to) {

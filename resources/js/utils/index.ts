@@ -61,3 +61,21 @@ export const existingFiles = (attachments: Attachment[]) => {
 export const existingLinks = (links: Link[]) => {
   return links && links.length > 0;
 };
+
+export const replaceBadgeNotificationCount = (notification: number) => {
+  const title = document.title;
+  const pattern = /\(\d+\)/;
+
+  if (pattern.test(title)) {
+    let newTitle = title.replace(pattern, `(${notification})`);
+    if (notification === 0) {
+      newTitle = newTitle.replace("(0) ", "");
+    }
+
+    document.title = newTitle;
+  } else if (notification > 0) {
+    const newTitle = `(${notification}) ${title}`;
+
+    document.title = newTitle;
+  }
+};

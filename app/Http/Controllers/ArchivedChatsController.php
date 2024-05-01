@@ -27,7 +27,9 @@ class ArchivedChatsController extends Controller
                 'chats' => fn () => $this->chats()
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 
@@ -68,7 +70,9 @@ class ArchivedChatsController extends Controller
                 'links' => fn () => $this->links($id),
             ]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 }

@@ -14,6 +14,9 @@ export type PageProps<
 > = T & {
   auth: User;
   ziggy: Config & { location: string };
+  error_msg: string | null;
+  success_msg: string | null;
+  notification_count: number;
 };
 
 export type ChatPageProps = PageProps<{ chats: ChatPaginate }>;

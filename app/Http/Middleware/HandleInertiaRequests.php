@@ -2,12 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\Chat;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
+    use Chat;
+
     /**
      * The root template that is loaded on the first page visit.
      *
@@ -37,6 +40,9 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'error_msg' => fn () => $request->session()->get('error_msg'),
+            'success_msg' => fn () => $request->session()->get('success_msg'),
+            'notification_count' => fn () => $this->notificationCount()
         ];
     }
 }

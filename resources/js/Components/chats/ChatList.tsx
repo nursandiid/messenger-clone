@@ -10,6 +10,7 @@ import ChatListAction from "@/components/chats/ChatListAction";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { BsArrowClockwise } from "react-icons/bs";
+import { useAppContext } from "@/contexts/app-context";
 
 type ChatListProps = {
   search: string;
@@ -18,6 +19,7 @@ type ChatListProps = {
 };
 
 export default function ChatList({ search, href, className }: ChatListProps) {
+  const { syncNotification } = useAppContext();
   const { chats, setChats, paginate, setPaginate } = useChatContext();
   const { ref: loadMoreRef, inView } = useInView();
 
@@ -33,7 +35,9 @@ export default function ChatList({ search, href, className }: ChatListProps) {
   }, [inView, paginate]);
 
   const handleMarkAsRead = (chat: Chat) => {
-    !chat.is_read && markAsRead(chat);
+    if (!chat.is_read) {
+      markAsRead(chat).then(syncNotification);
+    }
   };
 
   if (chats.length === 0) return;

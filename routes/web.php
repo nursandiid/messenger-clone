@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ChatsController::class, 'store'])->name('store');
         
         Route::get('/users', [ChatsController::class, 'loadChats'])->name('users');
+        Route::get('/notification', [ChatsController::class, 'loadNotification'])->name('notification');
         Route::get('/{id}/messages', [ChatsController::class, 'loadMessages'])->name('messages');
         Route::get('/{id}/media', [ChatsController::class, 'loadMedia'])->name('media');
         Route::get('/{id}/files', [ChatsController::class, 'loadFiles'])->name('files');

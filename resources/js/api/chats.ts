@@ -8,10 +8,16 @@ export const fetchChats = (
   return window.axios.get(`${route("chats.users")}?query=${query || ""}`);
 };
 
-export const fetchArchivedChats = (
-  query?: string,
-): Promise<AxiosResponse<{ data: ChatPaginate }>> => {
+export const fetchArchivedChats = (): Promise<
+  AxiosResponse<{ data: ChatPaginate }>
+> => {
   return window.axios.get(`${route("chats.users")}?archived_chats=true`);
+};
+
+export const fetchNotification = (): Promise<
+  AxiosResponse<{ data: { notification_count: number } }>
+> => {
+  return window.axios.get(route("chats.notification"));
 };
 
 export const fetchChatsInPaginate = (

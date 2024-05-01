@@ -59,7 +59,9 @@ class GroupController extends Controller
             return to_route('chats.show', $group->id);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 
@@ -125,7 +127,10 @@ class GroupController extends Controller
             return to_route('chats.show', $group->id);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+            
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 

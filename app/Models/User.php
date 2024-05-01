@@ -110,6 +110,6 @@ class User extends Authenticatable
 
     public function scopeInactive(Builder $query) 
     {
-        $query->online()->where('last_seen', '<', now()->subSeconds(10));
+        $query->online()->where('last_seen', '<', now()->subSeconds(30));
     }
 }

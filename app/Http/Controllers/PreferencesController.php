@@ -15,7 +15,9 @@ class PreferencesController extends Controller
         try {
             return Inertia::render('preferences/Index');
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            return back()->with([
+                'error_msg' => $e->getMessage()
+            ]);
         }
     }
 }

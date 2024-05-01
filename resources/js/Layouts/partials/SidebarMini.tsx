@@ -15,7 +15,7 @@ import {
 } from "react-icons/bs";
 
 export default function SidebarMini() {
-  const { auth } = useAppContext();
+  const { auth, notificationCount } = useAppContext();
   const { openModal } = useModalContext();
   const { width } = useScreenSize();
 
@@ -38,7 +38,7 @@ export default function SidebarMini() {
         )}
       >
         <BsChat className="h-6 w-6" />
-        <BadgeNotification />
+        {notificationCount > 0 && <BadgeNotification />}
       </Link>
 
       <Link

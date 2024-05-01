@@ -16,7 +16,8 @@ class UserActivity
         'chats.media',
         'chats.files',
         'chats.links',
-        'contacts.data'
+        'chats.notification',
+        'contacts.data',
     ];
 
     /**
@@ -32,7 +33,7 @@ class UserActivity
                 'is_online' => true
             ]);
 
-            $expiresAt = now()->seconds(10);
+            $expiresAt = now()->seconds(30);
             $key = 'user-online' . Auth::id();
 
             if (!Cache::has($key)) {
