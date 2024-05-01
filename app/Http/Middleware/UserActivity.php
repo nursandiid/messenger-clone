@@ -33,7 +33,7 @@ class UserActivity
                 'is_online' => true
             ]);
 
-            $expiresAt = now()->seconds(30);
+            $expiresAt = now()->addSeconds(30);
             $key = 'user-online' . Auth::id();
 
             if (!Cache::has($key)) {
