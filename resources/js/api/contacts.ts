@@ -30,3 +30,9 @@ export const unblockContact = (
 ): Promise<AxiosResponse<{ data: any }>> => {
   return window.axios.post(route("contacts.unblock", userId));
 };
+
+export const deleteContact = (
+  userId: string,
+): Promise<AxiosResponse<{ data: null }>> => {
+  return window.axios.delete(route("contacts.destroy", userId));
+};

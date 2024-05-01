@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}/save', [ContactsController::class, 'saveContact'])->name('save');
         Route::post('/{id}/block', [ContactsController::class, 'blockContact'])->name('block');
         Route::post('/{id}/unblock', [ContactsController::class, 'unblockContact'])->name('unblock');
+        Route::delete('/{id}', [ContactsController::class, 'destroy'])->name('destroy');
     });
     
     Route::group(['prefix' => 'archived', 'as' => 'archived_chats.'], function () {

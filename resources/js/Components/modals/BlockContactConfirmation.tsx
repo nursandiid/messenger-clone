@@ -2,6 +2,7 @@ import { blockContact } from "@/api/contacts";
 import Modal from "@/components/modals/Modal";
 import { useChatContext } from "@/contexts/chat-context";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
+import { useContactContext } from "@/contexts/contact-context";
 import { useModalContext } from "@/contexts/modal-context";
 import { Chat } from "@/types/chat";
 import { Fragment } from "react";
@@ -9,24 +10,37 @@ import { Fragment } from "react";
 export default function BlockContactConfirmation() {
   const { closeModal, data: chat } = useModalContext<Chat>();
   const { chats, setChats } = useChatContext();
+  const { contacts, setContacts } = useContactContext();
   const { user, setUser } = useChatMessageContext();
 
   if (!chat) return;
 
   const handleblockContact = () => {
     blockContact(chat.id).then(() => {
-      setChats(
-        chats.map((c) => {
-          if (c.id === chat.id) {
-            c.is_contact_blocked = true;
-          }
+      if (route().current("chats.*")) {
+        setChats(
+          chats.map((c) => {
+            if (c.id === chat.id) {
+              c.is_contact_blocked = true;
+            }
 
-          return c;
-        }),
-      );
+            return c;
+          }),
+        );
 
-      if (user && user.id === chat.id) {
-        setUser({ ...user, is_contact_blocked: true });
+        if (user && user.id === chat.id) {
+          setUser({ ...user, is_contact_blocked: true });
+        }
+      } else {
+        setContacts(
+          contacts.map((c) => {
+            if (c.id === chat.id) {
+              c.is_contact_blocked = true;
+            }
+
+            return c;
+          }),
+        );
       }
 
       closeModal();

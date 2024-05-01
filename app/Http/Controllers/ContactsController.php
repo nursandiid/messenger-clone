@@ -121,4 +121,28 @@ class ContactsController extends Controller
             return $this->oops($e->getMessage());
         }
     }
+
+    public function destroy(string $id)
+    {
+        DB::beginTransaction();
+        try {
+            $contact = ChatContact::where('user_id', auth()->id())
+                ->where('contact_id', $id)
+                ->first();
+
+            if (!$contact) {
+                throw new \Exception('Contact not found');
+            }
+
+            $contact->delete();
+
+            DB::commit();
+
+            return $this->ok(null);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return $this->oops($e->getMessage());
+        }
+    }
 }

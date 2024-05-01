@@ -34,7 +34,7 @@ export const archiveChat = (
 
 export const deleteChat = (
   chat: Chat,
-): Promise<AxiosResponse<{ data: Chat }>> => {
+): Promise<AxiosResponse<{ data: null }>> => {
   return window.axios.delete(route("chats.destroy_all", chat.id));
 };
 

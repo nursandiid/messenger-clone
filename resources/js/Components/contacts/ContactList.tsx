@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { BsArrowClockwise } from "react-icons/bs";
 import { useContactContext } from "@/contexts/contact-context";
 import { fetchContactsInPaginate } from "@/api/contacts";
+import ContactListAction from "@/components/contacts/ContactListAction";
 
 export default function ContactList() {
   const { contacts, setContacts, paginate, setPaginate } = useContactContext();
@@ -54,6 +55,8 @@ export default function ContactList() {
                 <h5 className="truncate font-medium">{contact.name}</h5>
               </div>
             </Link>
+
+            <ContactListAction contact={contact} />
           </div>
         ))}
 
