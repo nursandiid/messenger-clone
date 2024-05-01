@@ -91,9 +91,15 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
       ".user-activity",
       (data: { user: ChatProfile }) => {
         const chats = state.chats.length > 0 ? state.chats : props.chats.data;
-        const existingChat = chats.find((chat) => chat.id === data.user.id);
+        setChats(
+          chats.map((chat) => {
+            if (chat.id === data.user.id) {
+              chat.is_online = data.user.is_online;
+            }
 
-        existingChat && refetchChats();
+            return chat;
+          }),
+        );
       },
     );
 

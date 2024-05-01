@@ -255,7 +255,8 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
       ".user-activity",
       (data: { user: ChatProfile }) => {
         const user = state.user.id ? state.user : props.user;
-        setUser({ ...user, is_online: data.user.is_online });
+        user.id === data.user.id &&
+          setUser({ ...user, is_online: data.user.is_online });
       },
     );
 

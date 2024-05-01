@@ -81,14 +81,16 @@ export const ContactProvider = ({ children }: PropsWithChildren) => {
       (data: { user: ChatProfile }) => {
         const contacts =
           state.contacts.length > 0 ? state.contacts : props.contacts.data;
-        const existingContact = contacts.find(
-          (contact) => contact.id === data.user.id,
-        );
 
-        existingContact &&
-          fetchContacts().then((response) => {
-            setContacts(response.data.data.data);
-          });
+        setContacts(
+          contacts.map((contact) => {
+            if (contact.id === data.user.id) {
+              contact.is_online = data.user.is_online;
+            }
+
+            return contact;
+          }),
+        );
       },
     );
   }, []);
