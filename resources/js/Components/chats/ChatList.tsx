@@ -14,16 +14,10 @@ import { BsArrowClockwise } from "react-icons/bs";
 type ChatListProps = {
   search: string;
   href: string;
-  type: "chats" | "archived_chats";
   className?: string;
 };
 
-export default function ChatList({
-  search,
-  href,
-  type,
-  className,
-}: ChatListProps) {
+export default function ChatList({ search, href, className }: ChatListProps) {
   const { chats, setChats, paginate, setPaginate } = useChatContext();
   const { ref: loadMoreRef, inView } = useInView();
 
@@ -117,7 +111,7 @@ export default function ChatList({
               )}
             </Link>
 
-            {chat.body && type === "chats" && <ChatListAction chat={chat} />}
+            {chat.body && <ChatListAction chat={chat} />}
             {!chat.is_read && <BadgeChatNotification />}
           </div>
         ))}

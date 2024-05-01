@@ -91,7 +91,10 @@ trait Chat
                           ->orWhere('chat_messages.to_id', auth()->id())
                           ->orWhereIn('to_id', $group->pluck('group_id')->toArray());
                 })
-                ->whereNull('ac.id')
+                ->when(request()->filled('archived_chats'), 
+                    fn ($query) => $query->whereNotNull('ac.id'),
+                    fn ($query) => $query->whereNull('ac.id')
+                )
                 ->select('chat_messages.*', 'lm.another_user_id')
                 ->orderByDesc('sort_id')
                 ->paginate(15)

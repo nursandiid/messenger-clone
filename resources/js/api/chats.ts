@@ -8,6 +8,12 @@ export const fetchChats = (
   return window.axios.get(`${route("chats.users")}?query=${query || ""}`);
 };
 
+export const fetchArchivedChats = (
+  query?: string,
+): Promise<AxiosResponse<{ data: ChatPaginate }>> => {
+  return window.axios.get(`${route("chats.users")}?archived_chats=true`);
+};
+
 export const fetchChatsInPaginate = (
   url: string,
 ): Promise<AxiosResponse<{ data: ChatPaginate }>> => {
@@ -30,6 +36,12 @@ export const archiveChat = (
   chat: Chat,
 ): Promise<AxiosResponse<{ data: Chat }>> => {
   return window.axios.post(route("chats.archive", chat.id));
+};
+
+export const unarchiveChat = (
+  chat: Chat,
+): Promise<AxiosResponse<{ data: Chat }>> => {
+  return window.axios.post(route("chats.unarchive", chat.id));
 };
 
 export const deleteChat = (

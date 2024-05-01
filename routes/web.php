@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchivedChatsController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\GroupController;
@@ -61,7 +62,8 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::group(['prefix' => 'archived', 'as' => 'archived_chats.'], function () {
-        Route::get('/', [ChatsController::class, 'index'])->name('index');
+        Route::get('/', [ArchivedChatsController::class, 'index'])->name('index');
+        Route::get('/{id}', [ArchivedChatsController::class, 'show'])->name('show');
     });
 
 });

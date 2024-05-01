@@ -17,7 +17,7 @@ export default function BlockContactConfirmation() {
 
   const handleblockContact = () => {
     blockContact(chat.id).then(() => {
-      if (route().current("chats.*")) {
+      if (route().current("chats.*") || route().current("archived_chats.*")) {
         setChats(
           chats.map((c) => {
             if (c.id === chat.id) {

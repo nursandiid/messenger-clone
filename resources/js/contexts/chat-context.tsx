@@ -1,4 +1,4 @@
-import { fetchChats } from "@/api/chats";
+import { fetchArchivedChats, fetchChats } from "@/api/chats";
 import { ChatPageProps } from "@/types";
 import { Chat, ChatPaginate } from "@/types/chat";
 import { ChatProfile } from "@/types/chat-message";
@@ -71,7 +71,15 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
     dispatch({ type: "SET_PAGINATE", payload: value });
 
   const refetchChats = async () => {
-    return fetchChats().then((response) => setChats(response.data.data.data));
+    if (route().current("chats.*")) {
+      return fetchChats().then((response) => setChats(response.data.data.data));
+    }
+
+    if (route().current("archived_chats.*")) {
+      return fetchArchivedChats().then((response) =>
+        setChats(response.data.data.data),
+      );
+    }
   };
 
   useEffect(() => {

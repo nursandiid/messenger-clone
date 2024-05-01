@@ -11,7 +11,12 @@ import {
   BsXLg,
 } from "react-icons/bs";
 import { useAppContext } from "@/contexts/app-context";
-import { archiveChat, markAsRead, markAsUnread } from "@/api/chats";
+import {
+  archiveChat,
+  markAsRead,
+  markAsUnread,
+  unarchiveChat,
+} from "@/api/chats";
 import { useChatContext } from "@/contexts/chat-context";
 import { useModalContext } from "@/contexts/modal-context";
 import { unblockContact } from "@/api/contacts";
@@ -73,6 +78,12 @@ const Action = ({ chat }: ActionProps) => {
 
   const handleArchiveChat = () => {
     archiveChat(chat).then(() => {
+      refetchChats();
+    });
+  };
+
+  const handleUnarchiveChat = () => {
+    unarchiveChat(chat).then(() => {
       refetchChats();
     });
   };
@@ -148,12 +159,21 @@ const Action = ({ chat }: ActionProps) => {
           </Dropdown.Button>
         )}
 
-        <Dropdown.Button onClick={handleArchiveChat}>
-          <div className="flex items-center gap-2">
-            <BsArchive />
-            Archive Chat
-          </div>
-        </Dropdown.Button>
+        {route().current("chats.*") ? (
+          <Dropdown.Button onClick={handleArchiveChat}>
+            <div className="flex items-center gap-2">
+              <BsArchive />
+              Archive Chat
+            </div>
+          </Dropdown.Button>
+        ) : (
+          <Dropdown.Button onClick={handleUnarchiveChat}>
+            <div className="flex items-center gap-2">
+              <BsArchive />
+              Unarchive Chat
+            </div>
+          </Dropdown.Button>
+        )}
 
         <Dropdown.Button onClick={deleteChatConfirmation}>
           <div className="flex items-center gap-2">

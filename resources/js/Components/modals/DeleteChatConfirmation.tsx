@@ -14,14 +14,19 @@ export default function DeleteChatConfirmation() {
 
   const handleDeleteChat = () => {
     deleteChat(chat).then(() => {
-      if (route().current("chats.index")) {
+      if (
+        route().current("chats.index") ||
+        route().current("archived_chats.index")
+      ) {
         closeModal();
         setChats([...chats.filter((c) => c.id !== chat.id)]);
 
         return;
       }
 
-      router.replace(route("chats.index"));
+      route().current("chats.*")
+        ? router.replace(route("chats.index"))
+        : router.replace(route("archived_chats.index"));
     });
   };
 
