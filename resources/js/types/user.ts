@@ -11,6 +11,11 @@ export type User = {
   last_seen: string;
   created_at?: string;
   updated_at?: string;
+} & Contact;
+
+export type Contact = {
+  is_contact_blocked: boolean;
+  is_contact_saved: boolean;
 };
 
 export type UpdateProfileSchema = {

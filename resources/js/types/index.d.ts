@@ -7,6 +7,7 @@ import {
   ChatProfile,
   Link,
 } from "./chat-message";
+import { ContactPaginate } from "./contact";
 
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -25,3 +26,5 @@ export type ChatMessagePageProps = PageProps<{
   files: Attachment[];
   links: Link[];
 }>;
+
+export type ContactPageProps = PageProps<{ contacts: ContactPaginate }>;

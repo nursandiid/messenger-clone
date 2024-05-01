@@ -3,7 +3,7 @@
 }
 
 .epr_x558go {
-  @apply !ring-0 !outline-none !bg-secondary transition-all -mt-0.5;
+  @apply !ring-0 !outline-none !bg-secondary transition-all -mt-1;
 }
 
 .epr_x558go:focus {

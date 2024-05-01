@@ -1,13 +1,12 @@
 import { CHAT_TYPE } from "./chat";
 import { Paginate } from "./paginate";
-import { User } from "./user";
+import { Contact, User } from "./user";
 
-type ChatToUser = User & {
-  chat_type: CHAT_TYPE;
-  message_color: string;
-  is_contact_saved: boolean;
-  is_contact_blocked: boolean;
-};
+type ChatToUser = User &
+  Contact & {
+    chat_type: CHAT_TYPE;
+    message_color: string;
+  };
 
 type ChatToGroup = {
   description: string;

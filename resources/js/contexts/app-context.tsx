@@ -38,6 +38,8 @@ const initialState: State = {
     active_status: false,
     is_online: false,
     last_seen: "",
+    is_contact_blocked: false,
+    is_contact_saved: false,
   },
   setTheme: () => {},
   setAuth: () => {},

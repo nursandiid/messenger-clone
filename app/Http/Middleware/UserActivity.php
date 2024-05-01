@@ -16,6 +16,7 @@ class UserActivity
         'chats.media',
         'chats.files',
         'chats.links',
+        'contacts.data'
     ];
 
     /**

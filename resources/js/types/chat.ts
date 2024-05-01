@@ -1,4 +1,5 @@
 import { Paginate } from "./paginate";
+import { Contact } from "./user";
 
 export type Chat = {
   id: string;
@@ -12,9 +13,7 @@ export type Chat = {
   is_online: boolean;
   created_at: string;
   chat_type: CHAT_TYPE;
-  is_contact_saved: boolean;
-  is_contact_blocked: boolean;
-};
+} & Contact;
 
 export enum CHAT_TYPE {
   CHATS = "chats",

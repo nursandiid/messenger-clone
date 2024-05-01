@@ -1,4 +1,17 @@
+import { ContactPaginate } from "@/types/contact";
 import { AxiosResponse } from "axios";
+
+export const fetchContacts = (
+  query?: string,
+): Promise<AxiosResponse<{ data: ContactPaginate }>> => {
+  return window.axios.get(`${route("contacts.data")}?query=${query || ""}`);
+};
+
+export const fetchContactsInPaginate = (
+  url: string,
+): Promise<AxiosResponse<{ data: ContactPaginate }>> => {
+  return window.axios.get(url);
+};
 
 export const saveContact = (
   userId: string,

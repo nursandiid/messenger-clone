@@ -61,6 +61,14 @@ class User extends Authenticatable
         );
     }
 
+    protected function isContactBlocked(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (bool) $value,
+            set: fn ($value) => (int) $value
+        );
+    }
+
     public function contacts() 
     {
         return $this->hasMany(ChatContact::class, 'user_id');

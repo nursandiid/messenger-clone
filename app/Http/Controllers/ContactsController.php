@@ -3,20 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatContact;
+use App\Traits\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class ContactsController extends Controller
 {
+    use Contact;
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        try {
+            $contacts = $this->contacts();
+
+            return Inertia::render('contacts/Index', [
+                'contacts' => $contacts
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function loadData() 
+    {
+        try {
+            return $this->ok($this->contacts());
+        } catch (\Exception $e) {
+            return $this->oops($e->getMessage());
+        }
+    }
+
     public function saveContact(string $id)
     {
         DB::beginTransaction();
         try {
-            $contact = ChatContact::create([
-                'user_id' => auth()->id(),
-                'contact_id' => $id,
-                'is_contact_saved' => true
-            ]);
+            $contact = ChatContact::where('user_id', auth()->id())
+                ->where('contact_id', $id)
+                ->first();
+
+            if (!$contact) {
+                $contact = ChatContact::create([
+                    'user_id' => auth()->id(),
+                    'contact_id' => $id,
+                    'is_contact_saved' => true
+                ]);
+            }
 
             DB::commit();
 
@@ -45,7 +80,8 @@ class ContactsController extends Controller
                 ]);
             } else {
                 $contact->update([
-                    'is_contact_blocked' => true
+                    'is_contact_blocked' => true,
+                    'is_contact_saved' => false
                 ]);
             }
 
@@ -71,7 +107,10 @@ class ContactsController extends Controller
                 throw new \Exception('Contact not found');
             }
 
-            $contact->delete();
+            $contact->update([
+                'is_contact_blocked' => false,
+                'is_contact_saved' => true
+            ]);
 
             DB::commit();
 
