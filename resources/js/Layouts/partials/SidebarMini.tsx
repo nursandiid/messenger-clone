@@ -2,6 +2,7 @@ import BadgeNotification from "@/components/chats/BadgeNotification";
 import Dropdown from "@/components/Dropdown";
 import { useAppContext } from "@/contexts/app-context";
 import { useModalContext } from "@/contexts/modal-context";
+import { useScreenSize } from "@/hooks/use-screen-size";
 import { Link } from "@inertiajs/react";
 import clsx from "clsx";
 import {
@@ -16,6 +17,7 @@ import {
 export default function SidebarMini() {
   const { auth } = useAppContext();
   const { openModal } = useModalContext();
+  const { width } = useScreenSize();
 
   const openPreferences = () => {
     openModal({ view: "PREFERENCES", size: "lg" });
@@ -59,38 +61,54 @@ export default function SidebarMini() {
         <BsArchive className="h-6 w-6" />
       </Link>
 
-      <div className="relative flex flex-1 cursor-pointer items-center justify-center rounded-lg px-3 transition-all hover:bg-secondary sm:mt-auto sm:flex-initial sm:px-0 sm:hover:bg-transparent">
-        <Dropdown>
-          <Dropdown.Trigger>
-            <img
-              src={auth.avatar}
-              alt=""
-              className="h-8 w-8 rounded-full border border-secondary sm:h-10 sm:w-10"
-            />
-          </Dropdown.Trigger>
+      {width <= 640 ? (
+        <Link
+          href={route("preferences.index")}
+          className={clsx(
+            "flex flex-1 items-center justify-center rounded-lg p-3 transition-all hover:bg-secondary sm:flex-initial",
+            route().current("preferences.index") && "bg-secondary",
+          )}
+        >
+          <img
+            src={auth.avatar}
+            alt=""
+            className="h-8 w-8 rounded-full border border-secondary sm:h-10 sm:w-10"
+          />
+        </Link>
+      ) : (
+        <div className="relative flex flex-1 cursor-pointer items-center justify-center rounded-lg px-3 transition-all hover:bg-secondary sm:mt-auto sm:flex-initial sm:px-0 sm:hover:bg-transparent">
+          <Dropdown>
+            <Dropdown.Trigger>
+              <img
+                src={auth.avatar}
+                alt=""
+                className="h-8 w-8 rounded-full border border-secondary sm:h-10 sm:w-10"
+              />
+            </Dropdown.Trigger>
 
-          <Dropdown.Content align="top-left" contentClasses="mb-12 sm:mb-10">
-            <Dropdown.Button onClick={openPreferences}>
-              <div className="flex items-center gap-2">
-                <BsGear />
-                Preferences
-              </div>
-            </Dropdown.Button>
-            <Dropdown.Link href={route("profile.edit")}>
-              <div className="flex items-center gap-2">
-                <BsPersonCircle />
-                Profile
-              </div>
-            </Dropdown.Link>
-            <Dropdown.Link href={route("logout")} method="post" as="button">
-              <div className="flex items-center gap-2">
-                <BsBoxArrowRight />
-                Log out
-              </div>
-            </Dropdown.Link>
-          </Dropdown.Content>
-        </Dropdown>
-      </div>
+            <Dropdown.Content align="top-left" contentClasses="mb-12 sm:mb-10">
+              <Dropdown.Button onClick={openPreferences}>
+                <div className="flex items-center gap-2">
+                  <BsGear />
+                  Preferences
+                </div>
+              </Dropdown.Button>
+              <Dropdown.Link href={route("profile.edit")}>
+                <div className="flex items-center gap-2">
+                  <BsPersonCircle />
+                  Profile
+                </div>
+              </Dropdown.Link>
+              <Dropdown.Link href={route("logout")} method="post" as="button">
+                <div className="flex items-center gap-2">
+                  <BsBoxArrowRight />
+                  Log out
+                </div>
+              </Dropdown.Link>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      )}
     </div>
   );
 }

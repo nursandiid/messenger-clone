@@ -1,17 +1,9 @@
-import { useState } from "react";
-import { FaUsers } from "react-icons/fa";
-import ChatListSearch from "@/components/chats/ChatListSearch";
 import ChatList from "@/components/chats/ChatList";
 import { useChatContext } from "@/contexts/chat-context";
 import clsx from "clsx";
-import { useModalContext } from "@/contexts/modal-context";
 
 export default function Sidebar() {
   const { chats } = useChatContext();
-  const { openModal } = useModalContext();
-
-  const [search, setSearch] = useState("");
-
   return (
     <div
       className={clsx(
@@ -24,7 +16,7 @@ export default function Sidebar() {
       </div>
 
       {/* chats recently */}
-      <ChatList search={search} href="archived_chats.show" />
+      <ChatList search="" href="archived_chats.show" />
 
       {chats.length === 0 && (
         <p className="flex h-full flex-1 items-center justify-center">

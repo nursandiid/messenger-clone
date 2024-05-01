@@ -5,6 +5,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [ArchivedChatsController::class, 'show'])->name('show');
     });
 
+    Route::get('/preferences', [PreferencesController::class, 'index'])->name('preferences.index');
 });
 
 require __DIR__.'/auth.php';
