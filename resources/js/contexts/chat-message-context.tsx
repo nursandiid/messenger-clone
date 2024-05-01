@@ -34,6 +34,7 @@ type State = {
   files: Attachment[];
   links: Link[];
   showSidebarRight: boolean;
+  isTyping: boolean;
   setUser: (value: ChatProfile) => void;
   setMessages: (value: ChatMessage[]) => void;
   setPaginate: (value: ChatMessagePaginate) => void;
@@ -46,6 +47,7 @@ type State = {
   reloadFiles: (user: ChatProfile) => void;
   reloadLinks: (user: ChatProfile) => void;
   toggleSidebarRight: () => void;
+  setIsTyping: (value: boolean) => void;
 };
 
 type Action =
@@ -79,6 +81,10 @@ type Action =
   | {
       type: "SET_LINKS";
       payload: Link[];
+    }
+  | {
+      type: "SET_IS_TYPING";
+      payload: boolean;
     };
 
 const initialState: State = {
@@ -110,6 +116,7 @@ const initialState: State = {
   files: [],
   links: [],
   showSidebarRight: false,
+  isTyping: false,
   setUser: () => {},
   setMessages: () => {},
   setPaginate: () => {},
@@ -122,6 +129,7 @@ const initialState: State = {
   reloadFiles: () => {},
   reloadLinks: () => {},
   toggleSidebarRight: () => {},
+  setIsTyping: () => {},
 };
 
 const reducer = (state: State, action: Action) => {
@@ -177,6 +185,12 @@ const reducer = (state: State, action: Action) => {
         ...state,
         links: action.payload,
       };
+
+    case "SET_IS_TYPING":
+      return {
+        ...state,
+        isTyping: action.payload,
+      };
   }
 };
 
@@ -226,6 +240,9 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
   };
 
   const toggleSidebarRight = () => dispatch({ type: "TOGGLE_SIDEBAR_RIGHT" });
+
+  const setIsTyping = (value: boolean) =>
+    dispatch({ type: "SET_IS_TYPING", payload: value });
 
   const refetchMessages = () => {
     fetchMessages(props.user).then((response) => {
@@ -291,6 +308,7 @@ export const ChatMessageProvider = ({ children }: PropsWithChildren) => {
     reloadFiles,
     reloadLinks,
     toggleSidebarRight,
+    setIsTyping,
   };
 
   return (

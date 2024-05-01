@@ -10,6 +10,7 @@ import { BsBan, BsEmojiSmile, BsPlusLg } from "react-icons/bs";
 import { Preview } from "./Content";
 import { unblockContact } from "@/api/contacts";
 import { existingFiles, existingLinks, existingMedia } from "@/utils";
+import { PresenceChannel } from "laravel-echo";
 
 type ChatFooterProps = {
   scrollToBottom: () => void;
@@ -24,7 +25,7 @@ export default function ChatFooter({
   closeOnPreview,
   onSelectOrPreviewFiles,
 }: ChatFooterProps) {
-  const { theme } = useAppContext();
+  const { theme, auth } = useAppContext();
   const { chats, setChats, refetchChats } = useChatContext();
   const {
     user,
@@ -41,10 +42,36 @@ export default function ChatFooter({
   const [processing, setProcessing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     textareaRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    const channel = window.Echo.private(
+      `user-typing-${auth.id}-to-${user.id}`,
+    ) as PresenceChannel;
+
+    if (message.length > 0 && !isTyping) {
+      channel.whisper(".typing", {
+        from: auth,
+        to: user,
+        oldMessage: chats.find((c) => c.id === user.id),
+      });
+
+      setIsTyping(true);
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (isTyping) {
+      setTimeout(() => {
+        setIsTyping(false);
+        setTimeout(scrollToBottom, 300);
+      }, 10000);
+    }
+  }, [isTyping]);
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSelectOrPreviewFiles(e.target.files);

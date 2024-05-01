@@ -6,13 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import DragFileOverlay from "@/components/chats/DragFileOverlay";
 import PreviewOnDropFile from "@/components/chats/PreviewOnDropFile";
 import { useChatMessageContext } from "@/contexts/chat-message-context";
+import { useAppContext } from "@/contexts/app-context";
+import { ChatProfile } from "@/types/chat-message";
+import { Chat } from "@/types/chat";
 
 export type Preview = File & {
   preview: string;
 };
 
 export default function Content() {
-  const { showSidebarRight } = useChatMessageContext();
+  const { auth } = useAppContext();
+  const { showSidebarRight, user, isTyping, setIsTyping } =
+    useChatMessageContext();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -24,7 +29,23 @@ export default function Content() {
 
   useEffect(() => {
     scrollToBottom();
+
+    window.Echo.private(
+      `user-typing-${user.id}-to-${auth.id}`,
+    ).listenForWhisper(
+      ".typing",
+      (data: { from: ChatProfile; to: ChatProfile; oldMessage: Chat }) => {
+        if (data.to.id === auth.id && data.from.id === user.id) {
+          setIsTyping(true);
+          setTimeout(scrollToBottom, 300);
+        }
+      },
+    );
   }, []);
+
+  useEffect(() => {
+    isTyping && setTimeout(() => setIsTyping(false), 10000);
+  }, [isTyping]);
 
   const scrollToBottom = () => {
     if (bottomRef.current && chatContainerRef.current) {

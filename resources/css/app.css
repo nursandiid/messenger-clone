@@ -65,4 +65,29 @@
   .checkbox {
     @apply rounded border border-gray-200 dark:border-gray-500/25 bg-background text-primary !outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/15 focus:ring-offset-2 focus:ring-offset-background;
   }
+
+  .animate-typing {
+    animation: typing 1s linear infinite;
+    animation-delay: -0.9s;
+  }
+
+  .typing .animate-typing:nth-child(2) {
+    animation-delay: -0.7s;
+  }
+  
+  .typing .animate-typing:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  @keyframes typing {
+    0%, 60%, 100% {
+      transform: initial;
+      opacity: .6;
+    }
+
+    30% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
 }
