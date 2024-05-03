@@ -88,7 +88,7 @@ export default function ChatFooter({
 
     if (onPressBackspace) {
       const target = e.target as HTMLTextAreaElement;
-      const lines = target.validationMessage.split("\n");
+      const lines = target.value.split("\n");
 
       if (target.offsetHeight > 48) {
         if (lines[lines.length - 1] === "") {
