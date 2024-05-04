@@ -33,8 +33,7 @@ export default function ChatMessageAttachment({
   };
 
   return (
-    message.attachments &&
-    message.attachments.length > 0 && (
+    message.attachments?.length > 0 && (
       <div className="group relative flex gap-1">
         <div className={clsx("flex max-w-xs flex-col", className)}>
           {messageWithImages.length > 0 && (
@@ -60,7 +59,7 @@ export default function ChatMessageAttachment({
                     onClick={() => setSelectedMedia(attachment)}
                   />
 
-                  {message.attachments.length > 1 && (
+                  {message.attachments?.length > 1 && (
                     <DeleteSelectedFileInChat
                       message={message}
                       attachment={attachment}
@@ -94,7 +93,7 @@ export default function ChatMessageAttachment({
                       </div>
                     </div>
 
-                    {message.attachments.length > 1 && (
+                    {message.attachments?.length > 1 && (
                       <DeleteSelectedFileInChat
                         message={message}
                         attachment={attachment}

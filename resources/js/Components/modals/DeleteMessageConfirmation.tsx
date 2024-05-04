@@ -37,7 +37,7 @@ export default function DeleteMessageConfirmation() {
           able to see it.
         </p>
 
-        {message.attachments.length > 0 && (
+        {message.attachments?.length > 0 && (
           <p>{message.attachments.length} files will be removed for you.</p>
         )}
       </Modal.Body>

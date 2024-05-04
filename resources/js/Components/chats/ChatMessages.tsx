@@ -21,7 +21,7 @@ export default function ChatMessages() {
 
       return true;
     })
-    .filter((message) => message.body || message.attachments.length > 0);
+    .filter((message) => message.body || message.attachments?.length > 0);
 
   return (
     <div className="relative flex flex-1 flex-col gap-[3px] overflow-x-hidden">
@@ -87,11 +87,9 @@ export default function ChatMessages() {
                     </div>
                   )}
 
-                  {message.body &&
-                    message.attachments &&
-                    message.attachments.length > 0 && (
-                      <div className="my-[3px]"></div>
-                    )}
+                  {message.body && message.attachments?.length > 0 && (
+                    <div className="my-[3px]"></div>
+                  )}
 
                   <ChatMessageAttachment
                     message={message}
@@ -130,11 +128,9 @@ export default function ChatMessages() {
                     </div>
                   )}
 
-                  {message.body &&
-                    message.attachments &&
-                    message.attachments.length > 0 && (
-                      <div className="my-[3px]"></div>
-                    )}
+                  {message.body && message.attachments?.length > 0 && (
+                    <div className="my-[3px]"></div>
+                  )}
 
                   <ChatMessageAttachment
                     message={message}
