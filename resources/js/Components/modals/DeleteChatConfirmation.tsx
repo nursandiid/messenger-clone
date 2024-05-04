@@ -32,7 +32,7 @@ export default function DeleteChatConfirmation() {
 
   return (
     <Modal>
-      <Modal.Header title="Delete Message?" onClose={closeModal} />
+      <Modal.Header title="Delete Chat?" onClose={closeModal} />
       <Modal.Body as={Fragment}>
         <p>
           This chat will be removed for you, including the files. Others in the
