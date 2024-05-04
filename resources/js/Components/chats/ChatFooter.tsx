@@ -111,12 +111,12 @@ export default function ChatFooter({
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setProcessing(true);
 
     if ((message.length === 0 && attachments.length === 0) || processing) {
       return;
     }
 
+    setProcessing(true);
     saveMessage({ user, message, attachments })
       .then((response) => {
         closeOnPreview();
