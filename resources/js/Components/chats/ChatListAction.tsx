@@ -122,7 +122,7 @@ const Action = ({ chat }: ActionProps) => {
         }),
       );
 
-      if (user && user.id === chat.id) {
+      if (user?.id === chat.id) {
         setUser({ ...user, is_contact_blocked: false });
       }
     });

@@ -28,7 +28,7 @@ export default function BlockContactConfirmation() {
           }),
         );
 
-        if (user && user.id === chat.id) {
+        if (user?.id === chat.id) {
           setUser({ ...user, is_contact_blocked: true });
         }
       } else {

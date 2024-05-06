@@ -160,9 +160,7 @@ export default function ChatFooter({
         }),
       );
 
-      if (user && user.id === user.id) {
-        setUser({ ...user, is_contact_blocked: false });
-      }
+      setUser({ ...user, is_contact_blocked: false });
     });
   };
 
