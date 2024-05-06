@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\ChatContact;
 use App\Models\ChatGroup;
 use App\Models\ChatMessage;
 use App\Models\ChatMessageFile;
@@ -29,8 +30,15 @@ trait Chat
                 ->where('name', 'LIKE', '%'. request('query') .'%')
                 ->select('id', 'name', 'avatar', 'member_id');
 
+            $contacts = ChatContact::where('user_id', auth()->id())
+                ->select('contact_id', 'is_contact_blocked')
+                ->groupBy('contact_id', 'is_contact_blocked');
+
             $chats = User::leftJoinSub($chatGroup, 'cg', function (JoinClause $join) {
                     $join->on('cg.member_id', 'users.id')  ;
+                })
+                ->leftJoinSub($contacts, 'c', function (JoinClause $join) {
+                    $join->on('c.contact_id', 'users.id');
                 })
                 ->where('users.name', 'LIKE', '%'. request('query') .'%')
                 ->orWhere('cg.name', 'LIKE', '%'. request('query') .'%')
@@ -44,6 +52,7 @@ trait Chat
                     0 as is_reply,
                     IF (cg.id IS NULL AND users.is_online = 1 AND users.active_status = 1, 1, 0) as is_online,
                     IF (cg.id IS NULL, active_status, 0) as active_status,
+                    c.is_contact_blocked,
                     NULL as created_at,
                     ? as chat_type
                 ', 
