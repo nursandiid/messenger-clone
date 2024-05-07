@@ -74,11 +74,6 @@ trait Chat
                     $join->on('ac.from_id', 'lm.another_user_id')
                          ->where('ac.archived_by', auth()->id());
                 })
-                ->where(function (Builder $query) use ($group) {
-                    $query->where('chat_messages.from_id', auth()->id())
-                          ->orWhere('chat_messages.to_id', auth()->id())
-                          ->orWhereIn('to_id', $group->pluck('group_id')->toArray());
-                })
                 ->when(request()->filled('archived_chats'), 
                     fn ($query) => $query->whereNotNull('ac.id'),
                     fn ($query) => $query->whereNull('ac.id')
@@ -154,10 +149,17 @@ trait Chat
             ->where(function (Builder $query) use ($group) {
                 $query->where(function (Builder $query) {
                         $query->where('from_id', auth()->id())
-                            ->orWhere('to_type', User::class);
+                              ->whereNot('to_id', auth()->id());
                     })
-                    ->orWhere('to_id', auth()->id())
-                    ->orWhereIn('to_id', $group->pluck('group_id')->toArray());
+                    ->orWhere(function (Builder $query) {
+                        $query->where('to_id', auth()->id())
+                              ->whereNot('from_id', auth()->id());
+                    })
+                    ->orWhere(function (Builder $query) { // chat to self
+                        $query->where('from_id', auth()->id())
+                              ->where('to_id', auth()->id());
+                    })
+                    ->orWhereIn('to_id', $group->pluck('group_id')->toArray()); // chat to group
             })
             ->deletedInIds()
             ->selectRaw("
