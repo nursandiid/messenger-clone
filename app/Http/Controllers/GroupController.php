@@ -20,7 +20,7 @@ class GroupController extends Controller
         try {
             $request->validated();
 
-            $avatar = null;
+            $avatar = "/images/group-avatar.png";
             if ($request->hasFile('avatar')) {
                 $avatar = upload_file($request->file('avatar'), 'group');
             }
