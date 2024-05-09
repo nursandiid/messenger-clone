@@ -18,8 +18,10 @@ class UserActivity implements ShouldBroadcastNow
 
     /**
      * Create a new event instance.
+     * 
+     * @param array|User $user
      */
-    public function __construct(public User $user)
+    public function __construct(public $user)
     {
         //
     }

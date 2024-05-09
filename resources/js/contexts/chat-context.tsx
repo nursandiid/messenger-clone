@@ -89,11 +89,18 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
 
     window.Echo.channel(`user-activity`).listen(
       ".user-activity",
-      (data: { user: ChatProfile }) => {
-        const chats = state.chats.length > 0 ? state.chats : props.chats.data;
-        const existingChat = chats.find((chat) => chat.id === data.user.id);
+      (data: { user: ChatProfile | ChatProfile[] }) => {
+        // To handle inactive users via scheduler
+        if (Array.isArray(data.user)) {
+          refetchChats();
+        } else {
+          const chats = state.chats.length > 0 ? state.chats : props.chats.data;
+          const existingChat = chats.find(
+            (chat) => chat.id === (data.user as ChatProfile).id,
+          );
 
-        existingChat && refetchChats();
+          existingChat && refetchChats();
+        }
       },
     );
 

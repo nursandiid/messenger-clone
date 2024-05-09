@@ -28,7 +28,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ChatsController::class, 'index'])->name('index');
         Route::post('/', [ChatsController::class, 'store'])->name('store');
         
-        Route::get('/users', [ChatsController::class, 'loadChats'])->name('users');
+        // INFO: max 1 request in 3 seconds to fix bug too many connections
+        Route::get('/users', [ChatsController::class, 'loadChats'])
+            ->name('users')
+            ->middleware('throttle.withqueries:1,0.05');
         Route::get('/notification', [ChatsController::class, 'loadNotification'])->name('notification');
         Route::get('/{id}/messages', [ChatsController::class, 'loadMessages'])->name('messages');
         Route::get('/{id}/media', [ChatsController::class, 'loadMedia'])->name('media');

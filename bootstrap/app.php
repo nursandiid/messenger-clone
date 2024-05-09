@@ -19,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class
+            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'throttle.withqueries' => \App\Http\Middleware\ThrottleWithQueries::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -1,7 +1,4 @@
-import { fetchChats } from "@/api/chats";
-import { fetchContacts } from "@/api/contacts";
-import { ChatPageProps, ContactPageProps } from "@/types";
-import { Chat, ChatPaginate } from "@/types/chat";
+import { ContactPageProps } from "@/types";
 import { ChatProfile } from "@/types/chat-message";
 import { ContactPaginate } from "@/types/contact";
 import { InitialPaginate } from "@/types/paginate";
@@ -78,19 +75,32 @@ export const ContactProvider = ({ children }: PropsWithChildren) => {
 
     window.Echo.channel(`user-activity`).listen(
       ".user-activity",
-      (data: { user: ChatProfile }) => {
+      (data: { user: ChatProfile | ChatProfile[] }) => {
         const contacts =
           state.contacts.length > 0 ? state.contacts : props.contacts.data;
 
-        setContacts(
-          contacts.map((contact) => {
-            if (contact.id === data.user.id) {
-              contact.is_online = data.user.is_online;
-            }
+        if (Array.isArray(data.user)) {
+          const users = data.user as ChatProfile[];
+          setContacts(
+            contacts.map((contact) => {
+              const user = users.find((user) => user.id === contact.id);
+              if (user) contact.is_online = user.is_online;
 
-            return contact;
-          }),
-        );
+              return contact;
+            }),
+          );
+        } else {
+          const user = data.user as ChatProfile;
+          setContacts(
+            contacts.map((contact) => {
+              if (contact.id === user.id) {
+                contact.is_online = user.is_online;
+              }
+
+              return contact;
+            }),
+          );
+        }
       },
     );
   }, []);
