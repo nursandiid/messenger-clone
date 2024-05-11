@@ -154,8 +154,8 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
   const setNotificationCount = (value: number) =>
     dispatch({ type: "SET_NOTIFICATION_COUNT", payload: value });
 
-  const syncNotification = () => {
-    fetchNotification().then((response) => {
+  const syncNotification = async () => {
+    return await fetchNotification().then((response) => {
       setNotificationCount(response.data.data.notification_count);
     });
   };
@@ -171,8 +171,9 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     window.Echo.channel(`send-message-${props.auth.id}`).listen(
       ".send-message",
       () => {
-        syncNotification();
-        notificationRef.current?.play();
+        syncNotification().then(() => {
+          notificationRef.current?.play();
+        });
       },
     );
   }, []);
