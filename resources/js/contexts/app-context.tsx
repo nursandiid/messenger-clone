@@ -4,6 +4,7 @@ import { PageProps } from "@/types";
 import { User } from "@/types/user";
 import { replaceBadgeNotificationCount } from "@/utils";
 import { usePage } from "@inertiajs/react";
+import moment from "moment";
 import {
   createContext,
   useContext,
@@ -155,6 +156,16 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
     dispatch({ type: "SET_NOTIFICATION_COUNT", payload: value });
 
   const syncNotification = async () => {
+    const lastSync = localStorage.getItem("last-sync-notification");
+    const currentTime = moment();
+
+    if (lastSync && currentTime.diff(moment(parseInt(lastSync))) < 3000) return;
+
+    localStorage.setItem(
+      "last-sync-notification",
+      currentTime.valueOf().toString(),
+    );
+
     return await fetchNotification().then((response) => {
       setNotificationCount(response.data.data.notification_count);
     });

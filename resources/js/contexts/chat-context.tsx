@@ -4,6 +4,7 @@ import { Chat, ChatPaginate } from "@/types/chat";
 import { ChatProfile } from "@/types/chat-message";
 import { InitialPaginate } from "@/types/paginate";
 import { usePage } from "@inertiajs/react";
+import moment from "moment";
 import {
   createContext,
   useContext,
@@ -71,6 +72,13 @@ export const ChatProvider = ({ children }: PropsWithChildren) => {
     dispatch({ type: "SET_PAGINATE", payload: value });
 
   const refetchChats = async () => {
+    const lastSync = localStorage.getItem("last-sync-chats");
+    const currentTime = moment();
+
+    if (lastSync && currentTime.diff(moment(parseInt(lastSync))) < 3000) return;
+
+    localStorage.setItem("last-sync-chats", currentTime.valueOf().toString());
+
     if (route().current("chats.*")) {
       return fetchChats().then((response) => setChats(response.data.data.data));
     }

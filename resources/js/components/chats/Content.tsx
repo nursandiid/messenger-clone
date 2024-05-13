@@ -16,7 +16,7 @@ export type Preview = File & {
 
 export default function Content() {
   const { auth } = useAppContext();
-  const { showSidebarRight, user, isTyping, setIsTyping } =
+  const { showSidebarRight, messages, user, isTyping, setIsTyping } =
     useChatMessageContext();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -28,8 +28,6 @@ export default function Content() {
   const [selectedPreview, setSelectedPreview] = useState<Preview>();
 
   useEffect(() => {
-    scrollToBottom();
-
     window.Echo.private(
       `user-typing-${user.id}-to-${auth.id}`,
     ).listenForWhisper(
@@ -42,6 +40,10 @@ export default function Content() {
       },
     );
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     isTyping && setTimeout(() => setIsTyping(false), 10000);
