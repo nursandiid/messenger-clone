@@ -4,7 +4,7 @@
 This messenger app offers real-time messaging with a sleek UI design. It supports group chats, one-on-one messaging, and saved messages. Users can see active status and typing indicators, upload attachments, and send emojis. The app also features chat customization, media galleries, and contact list management, all with light and dark theme options.
 
 ## Features:
-- Real-time messaging using Pusher
+- Real-time messaging using Laravel Reverb
 - Notification system for messages and sound alerts
 - Sleek and intuitive UI design using Tailwind CSS
 - Tailwind animations and transition effects
