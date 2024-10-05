@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wlearnco/chat.w2learn.com
+    - /usr/local/bin/ea-php83 $DEPLOYPATH/artisan optimize:clear
+    - /usr/local/bin/ea-php83 $DEPLOYPATH/artisan migrate
