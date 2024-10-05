@@ -1,0 +1,495 @@
+{
+  "_ApplicationLogo-Dqu6h2GT.js": {
+    "file": "assets/ApplicationLogo-Dqu6h2GT.js",
+    "name": "ApplicationLogo",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_ChatList-rAbvBL05.js": {
+    "file": "assets/ChatList-rAbvBL05.js",
+    "name": "ChatList",
+    "imports": [
+      "resources/js/app.tsx",
+      "_index-nS5Yp60y.js",
+      "_clsx-B-dksMZM.js",
+      "_SidebarMini-CfCRdJqb.js",
+      "_index-Dx4gZyUt.js"
+    ]
+  },
+  "_Checkbox-CZtVUW69.js": {
+    "file": "assets/Checkbox-CZtVUW69.js",
+    "name": "Checkbox",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_ContentEmpty-BBaHEYDe.js": {
+    "file": "assets/ContentEmpty-BBaHEYDe.js",
+    "name": "ContentEmpty",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_FormAlert-CU8IlcVJ.js": {
+    "file": "assets/FormAlert-CU8IlcVJ.js",
+    "name": "FormAlert",
+    "imports": [
+      "resources/js/app.tsx",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "_GuestLayout-Df7qt1yI.js": {
+    "file": "assets/GuestLayout-Df7qt1yI.js",
+    "name": "GuestLayout",
+    "imports": [
+      "resources/js/app.tsx",
+      "_ApplicationLogo-Dqu6h2GT.js"
+    ]
+  },
+  "_InputError-Bz1JaDdo.js": {
+    "file": "assets/InputError-Bz1JaDdo.js",
+    "name": "InputError",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_InputLabel-BOEoPHxE.js": {
+    "file": "assets/InputLabel-BOEoPHxE.js",
+    "name": "InputLabel",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_Modal-ppMeCEZL.js": {
+    "file": "assets/Modal-ppMeCEZL.js",
+    "name": "Modal",
+    "imports": [
+      "resources/js/app.tsx",
+      "_transition-BV2HJH_b.js"
+    ]
+  },
+  "_PopupGallery-I2W1UNng.js": {
+    "file": "assets/PopupGallery-I2W1UNng.js",
+    "name": "PopupGallery",
+    "imports": [
+      "resources/js/app.tsx",
+      "_clsx-B-dksMZM.js",
+      "_index-nS5Yp60y.js",
+      "_SidebarMini-CfCRdJqb.js",
+      "_moment-C5S46NFB.js",
+      "_index-Dx4gZyUt.js",
+      "_index-D7z1SbM0.js",
+      "_index-6oVq9cAL.js",
+      "_transition-BV2HJH_b.js",
+      "_Modal-ppMeCEZL.js"
+    ]
+  },
+  "_PrimaryButton-EnS3u6pJ.js": {
+    "file": "assets/PrimaryButton-EnS3u6pJ.js",
+    "name": "PrimaryButton",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_Sidebar-B3NA0lpq.js": {
+    "file": "assets/Sidebar-B3NA0lpq.js",
+    "name": "Sidebar",
+    "imports": [
+      "resources/js/app.tsx",
+      "_index-D7z1SbM0.js",
+      "_SidebarMini-CfCRdJqb.js",
+      "_index-6oVq9cAL.js",
+      "_ChatList-rAbvBL05.js",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "_Sidebar-Dy-YTUjR.js": {
+    "file": "assets/Sidebar-Dy-YTUjR.js",
+    "name": "Sidebar",
+    "imports": [
+      "resources/js/app.tsx",
+      "_ChatList-rAbvBL05.js",
+      "_SidebarMini-CfCRdJqb.js",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "_SidebarMini-CfCRdJqb.js": {
+    "file": "assets/SidebarMini-CfCRdJqb.js",
+    "name": "SidebarMini",
+    "imports": [
+      "resources/js/app.tsx",
+      "_clsx-B-dksMZM.js",
+      "_transition-BV2HJH_b.js",
+      "_index-Dx4gZyUt.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js"
+    ]
+  },
+  "_clsx-B-dksMZM.js": {
+    "file": "assets/clsx-B-dksMZM.js",
+    "name": "clsx"
+  },
+  "_index-6oVq9cAL.js": {
+    "file": "assets/index-6oVq9cAL.js",
+    "name": "index",
+    "imports": [
+      "_index-Dx4gZyUt.js"
+    ]
+  },
+  "_index-D7z1SbM0.js": {
+    "file": "assets/index-D7z1SbM0.js",
+    "name": "index",
+    "imports": [
+      "_index-Dx4gZyUt.js"
+    ]
+  },
+  "_index-Dx4gZyUt.js": {
+    "file": "assets/index-Dx4gZyUt.js",
+    "name": "index",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_index-nS5Yp60y.js": {
+    "file": "assets/index-nS5Yp60y.js",
+    "name": "index",
+    "imports": [
+      "resources/js/app.tsx",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "_moment-C5S46NFB.js": {
+    "file": "assets/moment-C5S46NFB.js",
+    "name": "moment"
+  },
+  "_transition-BV2HJH_b.js": {
+    "file": "assets/transition-BV2HJH_b.js",
+    "name": "transition",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "resources/js/app.tsx": {
+    "file": "assets/app-2-nbgIXB.js",
+    "name": "app",
+    "src": "resources/js/app.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/pages/archived-chats/Index.tsx",
+      "resources/js/pages/archived-chats/Show.tsx",
+      "resources/js/pages/auth/ConfirmPassword.tsx",
+      "resources/js/pages/auth/ForgotPassword.tsx",
+      "resources/js/pages/auth/Login.tsx",
+      "resources/js/pages/auth/Register.tsx",
+      "resources/js/pages/auth/ResetPassword.tsx",
+      "resources/js/pages/auth/VerifyEmail.tsx",
+      "resources/js/pages/chats/Index.tsx",
+      "resources/js/pages/chats/Show.tsx",
+      "resources/js/pages/contacts/Index.tsx",
+      "resources/js/pages/preferences/Index.tsx",
+      "resources/js/pages/profile/Edit.tsx",
+      "resources/js/pages/profile/partials/DeleteUserForm.tsx",
+      "resources/js/pages/profile/partials/UpdatePasswordForm.tsx",
+      "resources/js/pages/profile/partials/UpdateProfileInformationForm.tsx",
+      "resources/js/pages/welcome/Index.tsx"
+    ],
+    "css": [
+      "assets/app-sIYCZ7VS.css"
+    ]
+  },
+  "resources/js/pages/archived-chats/Index.tsx": {
+    "file": "assets/Index-ZGrJ9r90.js",
+    "name": "Index",
+    "src": "resources/js/pages/archived-chats/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_Sidebar-Dy-YTUjR.js",
+      "_ContentEmpty-BBaHEYDe.js",
+      "_clsx-B-dksMZM.js",
+      "_transition-BV2HJH_b.js",
+      "_index-Dx4gZyUt.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js",
+      "_ChatList-rAbvBL05.js",
+      "_index-nS5Yp60y.js"
+    ]
+  },
+  "resources/js/pages/archived-chats/Show.tsx": {
+    "file": "assets/Show-Dtdgpshj.js",
+    "name": "Show",
+    "src": "resources/js/pages/archived-chats/Show.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_Sidebar-Dy-YTUjR.js",
+      "_PopupGallery-I2W1UNng.js",
+      "_clsx-B-dksMZM.js",
+      "_transition-BV2HJH_b.js",
+      "_index-Dx4gZyUt.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js",
+      "_ChatList-rAbvBL05.js",
+      "_index-nS5Yp60y.js",
+      "_index-D7z1SbM0.js",
+      "_index-6oVq9cAL.js"
+    ]
+  },
+  "resources/js/pages/auth/ConfirmPassword.tsx": {
+    "file": "assets/ConfirmPassword-CvWyOVZ9.js",
+    "name": "ConfirmPassword",
+    "src": "resources/js/pages/auth/ConfirmPassword.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_GuestLayout-Df7qt1yI.js",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js"
+    ]
+  },
+  "resources/js/pages/auth/ForgotPassword.tsx": {
+    "file": "assets/ForgotPassword-DfxXDtS1.js",
+    "name": "ForgotPassword",
+    "src": "resources/js/pages/auth/ForgotPassword.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_GuestLayout-Df7qt1yI.js",
+      "_InputError-Bz1JaDdo.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_FormAlert-CU8IlcVJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "resources/js/pages/auth/Login.tsx": {
+    "file": "assets/Login-C2WUH7fk.js",
+    "name": "Login",
+    "src": "resources/js/pages/auth/Login.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_Checkbox-CZtVUW69.js",
+      "_GuestLayout-Df7qt1yI.js",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_FormAlert-CU8IlcVJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js",
+      "_clsx-B-dksMZM.js"
+    ]
+  },
+  "resources/js/pages/auth/Register.tsx": {
+    "file": "assets/Register-CTdAu5mu.js",
+    "name": "Register",
+    "src": "resources/js/pages/auth/Register.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_GuestLayout-Df7qt1yI.js",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js"
+    ]
+  },
+  "resources/js/pages/auth/ResetPassword.tsx": {
+    "file": "assets/ResetPassword-BUlAn0gf.js",
+    "name": "ResetPassword",
+    "src": "resources/js/pages/auth/ResetPassword.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_GuestLayout-Df7qt1yI.js",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js"
+    ]
+  },
+  "resources/js/pages/auth/VerifyEmail.tsx": {
+    "file": "assets/VerifyEmail-CEfQazdR.js",
+    "name": "VerifyEmail",
+    "src": "resources/js/pages/auth/VerifyEmail.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_GuestLayout-Df7qt1yI.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js"
+    ]
+  },
+  "resources/js/pages/chats/Index.tsx": {
+    "file": "assets/Index-CTviXyfb.js",
+    "name": "Index",
+    "src": "resources/js/pages/chats/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_Sidebar-B3NA0lpq.js",
+      "_ContentEmpty-BBaHEYDe.js",
+      "_clsx-B-dksMZM.js",
+      "_transition-BV2HJH_b.js",
+      "_index-Dx4gZyUt.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js",
+      "_index-D7z1SbM0.js",
+      "_index-6oVq9cAL.js",
+      "_ChatList-rAbvBL05.js",
+      "_index-nS5Yp60y.js"
+    ]
+  },
+  "resources/js/pages/chats/Show.tsx": {
+    "file": "assets/Show-DRcAdQax.js",
+    "name": "Show",
+    "src": "resources/js/pages/chats/Show.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_Sidebar-B3NA0lpq.js",
+      "_PopupGallery-I2W1UNng.js",
+      "_clsx-B-dksMZM.js",
+      "_transition-BV2HJH_b.js",
+      "_index-Dx4gZyUt.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js",
+      "_index-D7z1SbM0.js",
+      "_index-6oVq9cAL.js",
+      "_ChatList-rAbvBL05.js",
+      "_index-nS5Yp60y.js"
+    ]
+  },
+  "resources/js/pages/contacts/Index.tsx": {
+    "file": "assets/Index-C3xVBWoJ.js",
+    "name": "Index",
+    "src": "resources/js/pages/contacts/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_clsx-B-dksMZM.js",
+      "_index-6oVq9cAL.js",
+      "_index-nS5Yp60y.js",
+      "_index-Dx4gZyUt.js",
+      "_ContentEmpty-BBaHEYDe.js",
+      "_transition-BV2HJH_b.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js"
+    ]
+  },
+  "resources/js/pages/preferences/Index.tsx": {
+    "file": "assets/Index-CfD29C_X.js",
+    "name": "Index",
+    "src": "resources/js/pages/preferences/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_SidebarMini-CfCRdJqb.js",
+      "_ContentEmpty-BBaHEYDe.js",
+      "_clsx-B-dksMZM.js",
+      "_index-Dx4gZyUt.js",
+      "resources/js/pages/profile/partials/UpdateProfileInformationForm.tsx",
+      "resources/js/pages/profile/partials/UpdatePasswordForm.tsx",
+      "resources/js/pages/profile/partials/DeleteUserForm.tsx",
+      "_transition-BV2HJH_b.js",
+      "_moment-C5S46NFB.js",
+      "_Modal-ppMeCEZL.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_InputError-Bz1JaDdo.js",
+      "_PrimaryButton-EnS3u6pJ.js"
+    ]
+  },
+  "resources/js/pages/profile/Edit.tsx": {
+    "file": "assets/Edit-BnDYgya2.js",
+    "name": "Edit",
+    "src": "resources/js/pages/profile/Edit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ApplicationLogo-Dqu6h2GT.js",
+      "_index-Dx4gZyUt.js",
+      "resources/js/pages/profile/partials/DeleteUserForm.tsx",
+      "resources/js/pages/profile/partials/UpdatePasswordForm.tsx",
+      "resources/js/pages/profile/partials/UpdateProfileInformationForm.tsx",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_Modal-ppMeCEZL.js",
+      "_transition-BV2HJH_b.js",
+      "_PrimaryButton-EnS3u6pJ.js"
+    ]
+  },
+  "resources/js/pages/profile/partials/DeleteUserForm.tsx": {
+    "file": "assets/DeleteUserForm-Cl7PV5l9.js",
+    "name": "DeleteUserForm",
+    "src": "resources/js/pages/profile/partials/DeleteUserForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_Modal-ppMeCEZL.js",
+      "_transition-BV2HJH_b.js"
+    ]
+  },
+  "resources/js/pages/profile/partials/UpdatePasswordForm.tsx": {
+    "file": "assets/UpdatePasswordForm-B2gAJaYU.js",
+    "name": "UpdatePasswordForm",
+    "src": "resources/js/pages/profile/partials/UpdatePasswordForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_transition-BV2HJH_b.js"
+    ]
+  },
+  "resources/js/pages/profile/partials/UpdateProfileInformationForm.tsx": {
+    "file": "assets/UpdateProfileInformationForm-BdhTfnGL.js",
+    "name": "UpdateProfileInformationForm",
+    "src": "resources/js/pages/profile/partials/UpdateProfileInformationForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_InputError-Bz1JaDdo.js",
+      "_InputLabel-BOEoPHxE.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_index-Dx4gZyUt.js",
+      "_transition-BV2HJH_b.js"
+    ]
+  },
+  "resources/js/pages/welcome/Index.tsx": {
+    "file": "assets/Index-CGofUxT9.js",
+    "name": "Index",
+    "src": "resources/js/pages/welcome/Index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_Checkbox-CZtVUW69.js",
+      "_InputError-Bz1JaDdo.js",
+      "_PrimaryButton-EnS3u6pJ.js",
+      "_ApplicationLogo-Dqu6h2GT.js",
+      "_moment-C5S46NFB.js",
+      "_index-Dx4gZyUt.js"
+    ]
+  }
+}
