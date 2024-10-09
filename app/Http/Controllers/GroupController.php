@@ -6,6 +6,7 @@ use App\Http\Requests\GroupRequest;
 use App\Models\ChatGroup;
 use App\Models\ChatMessage;
 use App\Models\GroupMember;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
